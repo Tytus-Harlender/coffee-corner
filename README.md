@@ -1,2 +1,4 @@
 # coffee-corner
-(PoC) online shop for ordering coffee
+Coffee Corner - your beans delivery (PoC) 
+
+Online shop for ordering coffee beans.
