@@ -1,0 +1,19 @@
+using CoffeeCorner.Application.Features.Products;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CoffeeCorner.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class ProductsController(IMediator mediator) : ControllerBase
+{
+    private readonly IMediator _mediator = mediator;
+
+    [HttpGet]
+    public async Task<object> GetAllProducts(GetProductsCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return result;
+    }
+}

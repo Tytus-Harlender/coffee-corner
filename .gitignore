@@ -1,0 +1,13 @@
+# OS/system files
+.DS_Store
+Thumbs.db
+
+# IDE/editor settings
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Node modules if installed at root (usually not, but just in case)
+node_modules/
