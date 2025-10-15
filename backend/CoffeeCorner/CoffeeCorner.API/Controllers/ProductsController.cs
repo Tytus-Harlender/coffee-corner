@@ -11,7 +11,7 @@ public class ProductsController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
-    public async Task<object> GetAllProducts(GetProductsCommand command)
+    public async Task<object> GetAllProducts(GetAllProductsQuery command)
     {
         var result = await _mediator.Send(command);
         return result;

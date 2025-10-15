@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CoffeeCorner.Application\CoffeeCorner.Application.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -2,6 +2,7 @@
 
 namespace CoffeeCorner.Application.Features.Products;
 
-public class GetProductsCommand : IRequest<object>
+public class GetAllProductsQuery : IRequest<List<ProductDto>>
 {
+
 }

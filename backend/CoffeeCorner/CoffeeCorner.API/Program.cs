@@ -1,5 +1,6 @@
 using CoffeeCorner.API.Features.CoffeeTypes;
 using CoffeeCorner.Application.Features.Products;
+using CoffeeCorner.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg => 
 {
-    cfg.RegisterServicesFromAssembly(typeof(GetProductsCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetAllProductsQuery).Assembly);
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<ICoffeeTypesService, CoffeeTypesService>();
+builder.Services.AddSingleton<IProductsReadRepository, ProductReadRepository>();
 
 var app = builder.Build();
 
