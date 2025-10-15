@@ -13,6 +13,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CoffeeCorner.Application\CoffeeCorner.Application.csproj" />
+		<ProjectReference Include="..\CoffeeCorner.Infrastructure\CoffeeCorner.Infrastructure.csproj" />
 	</ItemGroup>
 
 </Project>
