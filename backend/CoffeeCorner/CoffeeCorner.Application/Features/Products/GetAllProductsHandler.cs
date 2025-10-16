@@ -7,6 +7,6 @@ public class GetAllProductsHandler(IProductsReadRepository productsReadRepositor
     public async Task<List<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
     {
         var result = await productsReadRepository.GetAllProductsAsync();
-        return [.. result.Select(x => new ProductDto() { Name = x.Name, Description = x.Description })];
+        return [.. result.Select(x => new ProductDto() { PublicId = x.PublicId, Name = x.Name, Description = x.Description })];
     }
 }
