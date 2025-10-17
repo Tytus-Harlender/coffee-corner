@@ -15,7 +15,7 @@ builder.Services.AddMediatR(cfg =>
 });
 builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 {
-    options.UseSqlServer("connection string");
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
