@@ -1,12 +1,15 @@
 ﻿using CoffeeCorner.Application.Features.Products;
 using CoffeeCorner.Domain.Entities;
+using CoffeeCorner.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Infrastructure.Repositories;
 
-public class ProductReadRepository : IProductsReadRepository
+public class ProductReadRepository(CoffeeCornerDbContext dbContext) : IProductsReadRepository
 {
-    public Task<List<Product>> GetAllProductsAsync()
+    public async Task<List<Product>> GetAllProductsAsync()
     {
-        return Task.FromResult(new List<Product>() { new() { Id = 1, PublicId = Guid.NewGuid(), Description = "Coffee beans of a great taste!", Name = "Golden Brew", Price = 39.99m} });
+        var products = await dbContext.Products.ToListAsync();
+        return products;
     }
 }

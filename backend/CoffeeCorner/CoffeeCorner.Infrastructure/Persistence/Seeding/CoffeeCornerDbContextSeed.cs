@@ -4,12 +4,11 @@ public static class CoffeeCornerDbContextSeed
 {
     public static async Task SeedAsync(CoffeeCornerDbContext context)
     {
-        if (context.Products.Any())
-            await Task.CompletedTask;
-        
-        context.Products.AddRange(
-        [
-            new Domain.Entities.Product
+        if (!context.Products.Any())
+        {
+            context.Products.AddRange(
+            [
+                new Domain.Entities.Product
             {
                 PublicId = Guid.NewGuid(),
                 Name = "Golden Brew",
@@ -30,8 +29,9 @@ public static class CoffeeCornerDbContextSeed
                 Description = "Perfect blend for espresso enthusiasts.",
                 Price = 34.99m
             }
-        ]);
+            ]);
 
-        await context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+        }
     }
 }

@@ -22,7 +22,7 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<ICoffeeTypesService, CoffeeTypesService>();
-builder.Services.AddSingleton<IProductsReadRepository, ProductReadRepository>();
+builder.Services.AddScoped<IProductsReadRepository, ProductReadRepository>();
 
 var app = builder.Build();
 
@@ -32,7 +32,8 @@ if (app.Environment.IsDevelopment())
     var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
 
     await context.Database.MigrateAsync();
-    await CoffeeCornerDbContextSeed.SeedAsync(context);
+    if(!context.Products.Any())
+        await CoffeeCornerDbContextSeed.SeedAsync(context);
 }
 
 // Configure the HTTP request pipeline.
