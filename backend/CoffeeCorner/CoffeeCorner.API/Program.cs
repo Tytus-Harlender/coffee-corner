@@ -1,6 +1,7 @@
 using CoffeeCorner.API.Features.CoffeeTypes;
 using CoffeeCorner.Application.Features.Products;
 using CoffeeCorner.Infrastructure.Persistence;
+using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,7 @@ builder.Services.AddMediatR(cfg =>
 });
 builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -24,6 +25,15 @@ builder.Services.AddSingleton<ICoffeeTypesService, CoffeeTypesService>();
 builder.Services.AddSingleton<IProductsReadRepository, ProductReadRepository>();
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
+
+    await context.Database.MigrateAsync();
+    await CoffeeCornerDbContextSeed.SeedAsync(context);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
