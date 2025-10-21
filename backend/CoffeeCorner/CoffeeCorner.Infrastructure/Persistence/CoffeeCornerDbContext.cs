@@ -5,7 +5,7 @@ namespace CoffeeCorner.Infrastructure.Persistence;
 
 public class CoffeeCornerDbContext(DbContextOptions<CoffeeCornerDbContext> options) : DbContext(options)
 {
-    DbSet<Product> Products { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
