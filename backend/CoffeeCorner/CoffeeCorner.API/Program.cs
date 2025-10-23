@@ -32,8 +32,7 @@ if (app.Environment.IsDevelopment())
     var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
 
     await context.Database.MigrateAsync();
-    if(!context.Products.Any())
-        await CoffeeCornerDbContextSeed.SeedAsync(context);
+    await SeedingManager.SeedAsync(context);
 }
 
 // Configure the HTTP request pipeline.
