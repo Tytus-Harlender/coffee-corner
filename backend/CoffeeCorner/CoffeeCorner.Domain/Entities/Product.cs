@@ -8,4 +8,7 @@ public class Product : BaseEntity
     public string Description { get; set; } = string.Empty;
     public string? ImageUrl { get; set; }
     public int StockQuantity { get; set; }
+
+    public ICollection<Category> Categories { get; set; } = [];
+    public ICollection<CharacteristicValue> CharacteristicValues { get; set; } = [];
 }
