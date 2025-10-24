@@ -22,7 +22,7 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddSingleton<ICoffeeTypesService, CoffeeTypesService>();
-builder.Services.AddScoped<IProductsReadRepository, ProductReadRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductRepository>();
 
 var app = builder.Build();
 
