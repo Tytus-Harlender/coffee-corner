@@ -32,7 +32,11 @@ if (app.Environment.IsDevelopment())
     var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
 
     await context.Database.MigrateAsync();
-    await SeedingManager.SeedAsync(context);
+
+    if (!context.Products.Any())
+    {
+        await SeedingManager.SeedAsync(context);
+    }
 }
 
 // Configure the HTTP request pipeline.
@@ -48,6 +52,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapGet("/", () => "Welcome to Coffee Corner!");
-app.MapGet("/products/types", (ICoffeeTypesService coffeeTypesService) => coffeeTypesService.GetCoffeeTypes());
 
 app.Run();
