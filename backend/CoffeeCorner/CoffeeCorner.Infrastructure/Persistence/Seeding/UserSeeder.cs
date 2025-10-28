@@ -17,9 +17,8 @@ public class UserSeeder
     private static List<User> GetInitialUsers()
     {
         List<User> users = [
-            new User
+            new()
             {
-                Id = 1,
                 PublicId = Guid.NewGuid(),
                 Name = "Alice",
                 Surname = "Johnson",
@@ -30,9 +29,8 @@ public class UserSeeder
                 City = "New York",
                 Country = "USA"
             },
-            new User
+            new()
             {
-                Id = 2,
                 PublicId = Guid.NewGuid(),
                 Name = "Bob",
                 Surname = "Smith",
@@ -43,9 +41,8 @@ public class UserSeeder
                 City = "Los Angeles",
                 Country = "USA"
             },
-            new User
+            new()
             {
-                Id = 3,
                 PublicId = Guid.NewGuid(),
                 Name = "Charlie",
                 Surname = "Kowalski",
@@ -56,9 +53,8 @@ public class UserSeeder
                 City = "Warsaw",
                 Country = "Poland"
             },
-            new User
+            new()
             {
-                Id = 4,
                 PublicId = Guid.NewGuid(),
                 Name = "Diana",
                 Surname = "Lee",
