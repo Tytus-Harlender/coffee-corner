@@ -11,14 +11,14 @@ public class ProductsController(IMediator mediator) : ControllerBase
     private readonly IMediator _mediator = mediator;
 
     [HttpGet]
-    public async Task<object> GetAllProducts(GetAllProductsQuery command)
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(GetAllProductsQuery command)
     {
         var result = await _mediator.Send(command);
         return result;
     }
 
     [HttpGet("{publicId}")]
-    public async Task<object> GetAllProducts([FromRoute] Guid publicId)
+    public async Task<ActionResult<ProductDto>> GetProductById([FromRoute] Guid publicId)
     {
         var query = new GetProductByIdQuery(publicId);
         var result = await _mediator.Send(query);

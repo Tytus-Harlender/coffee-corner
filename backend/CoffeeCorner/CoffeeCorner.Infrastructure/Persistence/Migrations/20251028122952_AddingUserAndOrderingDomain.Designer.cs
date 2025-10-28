@@ -3,6 +3,7 @@ using System;
 using CoffeeCorner.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoffeeCorner.Infrastructure.Migrations
 {
     [DbContext(typeof(CoffeeCornerDbContext))]
-    partial class CoffeeCornerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251028122952_AddingUserAndOrderingDomain")]
+    partial class AddingUserAndOrderingDomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

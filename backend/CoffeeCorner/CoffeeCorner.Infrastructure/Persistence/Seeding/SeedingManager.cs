@@ -16,5 +16,9 @@ public static class SeedingManager
         {
             await ProductSeeder.SeedAsync(context);
         }
+        if (!context.Users.Any())
+        {
+            await UserSeeder.SeedAsync(context);
+        }
     }
 }

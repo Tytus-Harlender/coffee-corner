@@ -1,4 +1,3 @@
-using CoffeeCorner.API.Features.CoffeeTypes;
 using CoffeeCorner.Application.Features.Products;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
@@ -21,7 +20,6 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddSingleton<ICoffeeTypesService, CoffeeTypesService>();
 builder.Services.AddScoped<IProductsRepository, ProductRepository>();
 
 var app = builder.Build();
@@ -32,11 +30,7 @@ if (app.Environment.IsDevelopment())
     var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
 
     await context.Database.MigrateAsync();
-
-    if (!context.Products.Any())
-    {
-        await SeedingManager.SeedAsync(context);
-    }
+    await SeedingManager.SeedAsync(context);
 }
 
 // Configure the HTTP request pipeline.
