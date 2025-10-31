@@ -7,8 +7,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg => 
 {
@@ -19,8 +17,7 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddOpenApi("v1");
 builder.Services.AddScoped<IProductsRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
@@ -33,12 +30,13 @@ if (app.Environment.IsDevelopment())
 
     await context.Database.MigrateAsync();
     await SeedingManager.SeedAsync(context);
-}
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
     app.MapOpenApi();
+
+    app.UseSwaggerUI(options => {
+
+        options.SwaggerEndpoint("https://localhost:44347/openapi/v1.json", "Openapi V1");
+    });
 }
 
 app.UseHttpsRedirection();
