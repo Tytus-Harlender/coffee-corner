@@ -1,4 +1,5 @@
 using CoffeeCorner.Application.Features.Products;
+using CoffeeCorner.Application.Features.Users;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IProductsRepository, ProductRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

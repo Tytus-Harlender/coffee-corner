@@ -8,20 +8,18 @@ namespace CoffeeCorner.API.Controllers;
 [Route("api/[controller]")]
 public class ProductsController(IMediator mediator) : ControllerBase
 {
-    private readonly IMediator _mediator = mediator;
-
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(GetAllProductsQuery command)
     {
-        var result = await _mediator.Send(command);
-        return result;
+        var result = await mediator.Send(command);
+        return Ok(result);
     }
 
     [HttpGet("{publicId}")]
-    public async Task<ActionResult<ProductDto>> GetProductById([FromRoute] Guid publicId)
+    public async Task<ActionResult<ProductDto>> GetProductByPublicId([FromRoute] Guid publicId)
     {
-        var query = new GetProductByIdQuery(publicId);
-        var result = await _mediator.Send(query);
-        return result;
+        var query = new GetProductByPublicIdQuery(publicId);
+        var result = await mediator.Send(query);
+        return Ok(result);
     }
 }

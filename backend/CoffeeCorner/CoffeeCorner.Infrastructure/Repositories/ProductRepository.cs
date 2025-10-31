@@ -13,10 +13,12 @@ public class ProductRepository(CoffeeCornerDbContext dbContext) : IProductsRepos
         return products;
     }
 
-    public async Task<Product> GetProductByIdAsync(Guid publicId)
+    public async Task<Product> GetProductByPublicIdAsync(Guid publicId)
     {
-        var product = await dbContext.Products.Where(p => p.PublicId == publicId).FirstOrDefaultAsync();
+        var product = await dbContext.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.PublicId == publicId);
 
-        return product is null ? throw new Exception("Product with given id does not exist") : product;
+        return product is null ? new Product() : product;
     }
 }
