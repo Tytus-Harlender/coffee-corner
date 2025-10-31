@@ -1,9 +1,15 @@
-﻿using CoffeeCorner.Domain.Entities;
+﻿using CoffeeCorner.Application.Features.Users.CreateUser;
+using CoffeeCorner.Application.Features.Users.DeleteUser;
+using CoffeeCorner.Application.Features.Users.UpdateUser;
+using CoffeeCorner.Domain.Entities;
 
 namespace CoffeeCorner.Application.Features.Users;
 
 public interface IUserRepository
 {
-    public Task<User> GetUserByPublicId(Guid publicId);
+    public Task<IEnumerable<User>> GetAllUsersAsync();
+    public Task<User> GetUserAsync(Guid publicId);
     public Task<Guid> CreateUserAsync(CreateUserCommand command);
+    public Task<User> UpdateUserAsync(UpdateUserCommand command);
+    public Task DeleteUserAsync(DeleteUserCommand command);
 }

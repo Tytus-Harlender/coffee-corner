@@ -7,13 +7,13 @@ namespace CoffeeCorner.Infrastructure.Repositories;
 
 public class ProductRepository(CoffeeCornerDbContext dbContext) : IProductsRepository
 {
-    public async Task<List<Product>> GetAllProductsAsync()
+    public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {
         var products = await dbContext.Products.ToListAsync();
         return products;
     }
 
-    public async Task<Product> GetProductByPublicIdAsync(Guid publicId)
+    public async Task<Product> GetProductAsync(Guid publicId)
     {
         var product = await dbContext.Products
             .AsNoTracking()

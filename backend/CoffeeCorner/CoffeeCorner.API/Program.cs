@@ -1,4 +1,5 @@
 using CoffeeCorner.Application.Features.Products;
+using CoffeeCorner.Application.Features.Products.GetAllProducts;
 using CoffeeCorner.Application.Features.Users;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;

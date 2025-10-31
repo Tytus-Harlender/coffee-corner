@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace CoffeeCorner.Application.Features.Users;
+namespace CoffeeCorner.Application.Features.Users.CreateUser;
 
 public class CreateUserHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, UserDto>
 {

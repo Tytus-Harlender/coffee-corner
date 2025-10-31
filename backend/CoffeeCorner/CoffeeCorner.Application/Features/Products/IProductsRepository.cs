@@ -4,6 +4,6 @@ namespace CoffeeCorner.Application.Features.Products;
 
 public interface IProductsRepository
 {
-    public Task<List<Product>> GetAllProductsAsync();
-    public Task<Product> GetProductByPublicIdAsync(Guid publicId);
+    public Task<IEnumerable<Product>> GetAllProductsAsync();
+    public Task<Product> GetProductAsync(Guid publicId);
 }
