@@ -12,4 +12,5 @@ public interface IUserRepository
     public Task<Guid> CreateUserAsync(CreateUserCommand command);
     public Task<User> UpdateUserAsync(UpdateUserCommand command);
     public Task DeleteUserAsync(DeleteUserCommand command);
+    public Task<IEnumerable<Order>> GetAllUserOrdersAsync(Guid publicId);
 }

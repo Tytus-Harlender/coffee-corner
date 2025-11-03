@@ -1,3 +1,4 @@
+using CoffeeCorner.Application.Features.Baskets;
 using CoffeeCorner.Application.Features.Products;
 using CoffeeCorner.Application.Features.Products.GetAllProducts;
 using CoffeeCorner.Application.Features.Users;
@@ -21,6 +22,7 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 builder.Services.AddOpenApi("v1");
 builder.Services.AddScoped<IProductsRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 var app = builder.Build();
 

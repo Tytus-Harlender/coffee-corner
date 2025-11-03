@@ -79,9 +79,22 @@ public class UserRepository(CoffeeCornerDbContext context) : IUserRepository
     {
         var user = await context.Users
             .FirstOrDefaultAsync(u => u.PublicId == command.PublicId) ?? throw new Exception("User not found for the provided publicId value");
-        
+
         user.IsDeleted = true;
-        
+
         await context.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<Order>> GetAllUserOrdersAsync(Guid userPublicId)
+    {
+        var userOrders = await context.Orders
+            .AsNoTracking()
+            .Where(o => o.User.PublicId == userPublicId)
+            .ToListAsync();
+
+        if (userOrders.Count == 0)
+            throw new Exception("No orders found for the user");
+
+        return userOrders;
     }
 }

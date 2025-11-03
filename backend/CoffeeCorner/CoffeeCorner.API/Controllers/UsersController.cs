@@ -1,6 +1,11 @@
-﻿using CoffeeCorner.Application.Features.Users;
+﻿using CoffeeCorner.Application.Features.Baskets;
+using CoffeeCorner.Application.Features.Baskets.AddUserBasketItems;
+using CoffeeCorner.Application.Features.Baskets.GetUserBasket;
+using CoffeeCorner.Application.Features.Orders;
+using CoffeeCorner.Application.Features.Users;
 using CoffeeCorner.Application.Features.Users.CreateUser;
 using CoffeeCorner.Application.Features.Users.DeleteUser;
+using CoffeeCorner.Application.Features.Users.GetAllUserOrders;
 using CoffeeCorner.Application.Features.Users.GetAllUsers;
 using CoffeeCorner.Application.Features.Users.GetUser;
 using CoffeeCorner.Application.Features.Users.UpdateUser;
@@ -28,6 +33,14 @@ public class UsersController(IMediator mediator) : ControllerBase
         return result is null ? NotFound("User not found") : Ok(result);
     }
 
+    [HttpGet("{publicId:guid}/orders")]
+    public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllUserOrdersAsync([FromRoute] Guid publicId)
+    {
+        var query = new GetAllUserOrdersQuery(publicId);
+        var result = await mediator.Send(query);
+        return result is null ? NotFound("Orders not found for the user") : Ok(result);
+    }
+
     [HttpPost]
     public async Task<ActionResult<UserDto>> CreateUserAsync(CreateUserCommand command)
     {
@@ -49,5 +62,21 @@ public class UsersController(IMediator mediator) : ControllerBase
         var command = new DeleteUserCommand(publicId);
         var result = await mediator.Send(command);
         return result is null ? BadRequest() : NoContent();
+    }
+
+    [HttpGet("{publicId:guid}/basket")]
+    public async Task<ActionResult<BasketDto>> GetUserBasketAsync([FromRoute] Guid publicId)
+    {
+        var query = new GetUserBasketQuery(publicId);
+        var result = await mediator.Send(query);
+        return result is null ? NotFound("Basket not found for the user") : Ok(result);
+    }
+
+    [HttpPost("{publicId:guid}/basket/items")]
+    public async Task<ActionResult<BasketDto>> CreateUserBasketItemsAsync([FromRoute] Guid publicId)
+    {
+        var command = new AddUserBasketItemsCommand(publicId);
+        var result = await mediator.Send(command);
+        return result is null ? NotFound("Basket not found for the user") : Ok(result);
     }
 }
