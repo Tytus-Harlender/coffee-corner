@@ -7,37 +7,43 @@ namespace CoffeeCorner.Infrastructure.Repositories;
 
 public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
 {
-    public async Task<IEnumerable<BasketItem>> AddUserBasketItemsAsync(IEnumerable<BasketItem> basketItems)
+    public async Task AddAsync(Basket basket)
     {
-        await context.BasketItems.AddRangeAsync(basketItems);
-        await context.SaveChangesAsync();
-        return basketItems;
+        await context.Baskets.AddAsync(basket);
     }
 
-    public async Task<Basket> GetUserBasketAsync(Guid userPublicId)
+    public Task Update(Basket basket)
+    {
+        context.Baskets.Update(basket);
+        return Task.CompletedTask;
+    }
+
+    public async Task<Basket> GetUserBasketAsync(Guid userPublicId, bool asNoTracking)
     {
         var user = await context.Users
             .FirstOrDefaultAsync(u => u.PublicId == userPublicId);
 
-        var existingBasket = await context.Baskets
-            .AsNoTracking()
-            .Where(b => b.User.PublicId == userPublicId && !b.IsDeleted)
-            .Include(b => b.User)
-            .Include(b => b.BasketItems)
-            .FirstOrDefaultAsync();
-
         if (user is null)
             throw new Exception($"{nameof(user)} is null");
-        else if (existingBasket is not null)
+
+        var query = context.Baskets
+            .Where(b => b.UserId == user.Id && !b.IsDeleted)
+            .Include(b => b.BasketItems);
+
+        if (asNoTracking)
+            query.AsNoTracking();
+            
+        var existingBasket = await query.FirstOrDefaultAsync();
+
+        if (existingBasket is not null)
             return existingBasket;
 
         var newBasket = new Basket()
         {
-            User = user,
+            UserId = user.Id
         };
 
         await context.Baskets.AddAsync(newBasket);
-        await context.SaveChangesAsync();
 
         return newBasket;
     }

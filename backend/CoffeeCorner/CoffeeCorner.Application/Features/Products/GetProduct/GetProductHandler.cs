@@ -2,7 +2,7 @@
 
 namespace CoffeeCorner.Application.Features.Products.GetProduct;
 
-public class GetProductHandler(IProductsRepository productsRepository) : IRequestHandler<GetProductQuery, ProductDto>
+public class GetProductHandler(IProductRepository productsRepository) : IRequestHandler<GetProductQuery, ProductDto>
 {
     public async Task<ProductDto> Handle(GetProductQuery query, CancellationToken cancellationToken)
     {

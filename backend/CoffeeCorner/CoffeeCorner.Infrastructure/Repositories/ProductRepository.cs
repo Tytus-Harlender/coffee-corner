@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Infrastructure.Repositories;
 
-public class ProductRepository(CoffeeCornerDbContext dbContext) : IProductsRepository
+public class ProductRepository(CoffeeCornerDbContext dbContext) : IProductRepository
 {
     public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {

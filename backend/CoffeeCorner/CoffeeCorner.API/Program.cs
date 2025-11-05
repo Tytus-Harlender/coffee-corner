@@ -2,6 +2,7 @@ using CoffeeCorner.Application.Features.Baskets;
 using CoffeeCorner.Application.Features.Products;
 using CoffeeCorner.Application.Features.Products.GetAllProducts;
 using CoffeeCorner.Application.Features.Users;
+using CoffeeCorner.Application.Interfaces;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
@@ -14,15 +15,22 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllProductsQuery).Assembly);
 });
-builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
+builder.Services.AddDbContext<CoffeeCornerDbContext>((serviceProvider,options) =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+    if (builder.Environment.IsDevelopment())
+    {
+        options.EnableSensitiveDataLogging();
+        options.EnableDetailedErrors();
+    }
 });
 
 builder.Services.AddOpenApi("v1");
-builder.Services.AddScoped<IProductsRepository, ProductRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();
 

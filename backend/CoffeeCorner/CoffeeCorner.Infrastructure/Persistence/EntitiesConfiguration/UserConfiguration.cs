@@ -22,8 +22,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired();
 
         builder.HasMany(u => u.Baskets)
-            .WithOne(b => b.User)
-            .HasForeignKey("UserId")
+            .WithOne()
+            .HasForeignKey(b => b.UserId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(u => u.Orders)
