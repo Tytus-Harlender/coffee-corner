@@ -33,4 +33,21 @@ public class Basket : BaseEntity
             AddItem(product, quantity, unitPrice);
         }
     }
+
+    public void DeleteItem(Guid productPublicId)
+    {
+        var existingItem = BasketItems.Where(bi => bi.Product.PublicId == productPublicId).FirstOrDefault();
+
+        if (existingItem != null)
+        {
+            if (existingItem.Quantity > 0)
+            {
+                existingItem.Quantity -= 1;
+            }
+        }
+        else 
+        {
+            throw new Exception("Unable to delete - no products with provided publicId within the basket");
+        }
+    }
 }

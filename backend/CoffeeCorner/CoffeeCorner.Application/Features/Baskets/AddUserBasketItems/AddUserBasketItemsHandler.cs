@@ -17,9 +17,9 @@ public class AddUserBasketItemsHandler(IBasketRepository basketRepository, IProd
         }
 
         if (basket.Id == 0)
-            await basketRepository.AddAsync(basket);
+            await basketRepository.AddBasketAsync(basket);
         else
-            await basketRepository.Update(basket);
+            await basketRepository.UpdateBasketAsync(basket);
 
         await unitOfWork.SaveChangesAsync();
         return [.. basket.BasketItems.Select(bi => new BasketItemDto() { ProductPublicId = bi.Product.PublicId, Quantity = bi.Quantity, UnitPrice = bi.UnitPrice })];

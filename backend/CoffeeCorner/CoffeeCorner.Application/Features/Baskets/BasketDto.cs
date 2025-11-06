@@ -3,5 +3,5 @@
 public class BasketDto
 {
     public Guid UserPublicId { get; set; }
-    public IEnumerable<object> BasketItems { get; set; } = [];
+    public IEnumerable<BasketItemDto> BasketItems { get; set; } = [];
 }

@@ -1,5 +1,6 @@
 ﻿using CoffeeCorner.Application.Features.Baskets;
 using CoffeeCorner.Application.Features.Baskets.AddUserBasketItems;
+using CoffeeCorner.Application.Features.Baskets.DeleteUserBasketItems;
 using CoffeeCorner.Application.Features.Baskets.GetUserBasket;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +19,19 @@ public class BasketsController(IMediator mediator) : Controller
         return result is null ? NotFound("Basket not found for the user") : Ok(result);
     }
 
-    [HttpPost("{publicId:guid}/basket/items")]
-    public async Task<ActionResult<BasketDto>> CreateUserBasketItemsAsync(AddUserBasketItemsCommand addUserBasketItemsCommand, [FromRoute] Guid publicId)
+    [HttpPost("{userPublicId:guid}/basket/items")]
+    public async Task<ActionResult<BasketDto>> CreateUserBasketItemsAsync(AddUserBasketItemsCommand addUserBasketItemsCommand, [FromRoute] Guid userPublicId)
     {
-        addUserBasketItemsCommand.UserPublicId = publicId;
+        addUserBasketItemsCommand.UserPublicId = userPublicId;
         var result = await mediator.Send(addUserBasketItemsCommand);
         return result is null ? NotFound("Basket not found for the user") : Ok(result);
+    }
+
+    [HttpDelete("{userPublicId:guid}/basket/items/{productPublicId:guid}")]
+    public async Task<ActionResult<BasketDto>> DeleteUserBasketItemsAsync([FromRoute] Guid userPublicId, [FromRoute] Guid productPublicId)
+    {
+        var command = new DeleteUserBasketItemsCommand(userPublicId, productPublicId);
+        _ = await mediator.Send(command);
+        return NoContent();
     }
 }

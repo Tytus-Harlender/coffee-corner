@@ -12,8 +12,8 @@ public class BasketConfiguration : IEntityTypeConfiguration<Basket>
         builder.HasKey(b => b.Id);
 
         builder.HasMany(b => b.BasketItems)
-            .WithOne(bi => bi.Basket)
-            .HasForeignKey("BasketId")
+            .WithOne()
+            .HasForeignKey(bi => bi.BasketId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }
