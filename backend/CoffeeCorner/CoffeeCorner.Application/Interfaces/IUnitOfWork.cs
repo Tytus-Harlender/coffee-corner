@@ -5,5 +5,5 @@ namespace CoffeeCorner.Application.Interfaces;
 public interface IUnitOfWork : IDisposable
 {
     IBasketRepository BasketRepository { get; }
-    Task<int> SaveChangesAsync();
+    Task SaveChangesAsync();
 }

@@ -10,5 +10,5 @@ public class UnitOfWork(CoffeeCornerDbContext context, IBasketRepository basketR
 
     public void Dispose() => _context.Dispose();
 
-    public async Task<int> SaveChangesAsync() => await _context.SaveChangesAsync();
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 }

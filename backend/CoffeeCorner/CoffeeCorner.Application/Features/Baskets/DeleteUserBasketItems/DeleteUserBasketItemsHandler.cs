@@ -8,8 +8,6 @@ public class DeleteUserBasketItemsHandler(IBasketRepository basketRepository, IU
     public async Task<Unit> Handle(DeleteUserBasketItemsCommand request, CancellationToken cancellationToken)
     {
         var basket = await basketRepository.GetUserBasketAsync(request.UserPublicId);
-
-        if (basket == null) throw new ArgumentNullException("No basket found", nameof(basket));
     
         basket.DeleteItem(request.ProductPublicId);
 
