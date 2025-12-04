@@ -6,5 +6,5 @@ public class Order : BaseEntity
     public decimal TotalAmount { get; set; }
 
     public ICollection<OrderItem> OrderItems { get; set; } = [];
-    public User User { get; set; } = null!;
+    public int UserId { get; set; }
 }

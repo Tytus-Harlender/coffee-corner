@@ -3,6 +3,7 @@ using System;
 using CoffeeCorner.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoffeeCorner.Infrastructure.Migrations
 {
     [DbContext(typeof(CoffeeCornerDbContext))]
-    partial class CoffeeCornerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251204142401_AddingAuthWithIdentityUser")]
+    partial class AddingAuthWithIdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -534,7 +537,7 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategory", (string)null);
+                    b.ToTable("ProductCategory");
                 });
 
             modelBuilder.Entity("ProductCharacteristicValue", b =>
@@ -549,7 +552,7 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCharacteristicValue", (string)null);
+                    b.ToTable("ProductCharacteristicValue");
                 });
 
             modelBuilder.Entity("CoffeeCorner.Domain.Entities.Basket", b =>

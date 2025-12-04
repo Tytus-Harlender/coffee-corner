@@ -1,11 +1,13 @@
 ﻿using CoffeeCorner.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Infrastructure.Persistence;
 
-public class CoffeeCornerDbContext(DbContextOptions<CoffeeCornerDbContext> options) : DbContext(options)
+public class CoffeeCornerDbContext(DbContextOptions<CoffeeCornerDbContext> options)
+        : IdentityDbContext<User, IdentityRole<int>, int>(options)
 {
-    public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Characteristic> Characteristics { get; set; }
@@ -17,8 +19,8 @@ public class CoffeeCornerDbContext(DbContextOptions<CoffeeCornerDbContext> optio
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoffeeCornerDbContext).Assembly);
-
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(CoffeeCornerDbContext).Assembly);
     }
 }

@@ -10,8 +10,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("Users");
         builder.HasKey(u => u.Id);
-        builder.Property(u => u.PublicId)
-            .IsRequired();
         builder.Property(u => u.Name)
             .IsRequired();
         builder.Property(u => u.Surname)
@@ -27,8 +25,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(u => u.Orders)
-            .WithOne(o => o.User)
-            .HasForeignKey("UserId")
+            .WithOne()
+            .HasForeignKey(u => u.UserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

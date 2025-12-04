@@ -25,7 +25,7 @@ public class UserRepository(CoffeeCornerDbContext context) : IUserRepository
             .AsNoTracking()
             .FirstOrDefaultAsync(u => u.PublicId == publicId);
 
-        return user is null ? new User() : user;
+        return user is null ? throw new Exception("User not found for the provided publicId value") : user;
     }
 
     public async Task<Guid> CreateUserAsync(CreateUserCommand command)
@@ -87,9 +87,13 @@ public class UserRepository(CoffeeCornerDbContext context) : IUserRepository
 
     public async Task<IEnumerable<Order>> GetAllUserOrdersAsync(Guid userPublicId)
     {
+        var user = await context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.PublicId == userPublicId) ?? throw new Exception("User not found for the provided publicId value");
+        
         var userOrders = await context.Orders
             .AsNoTracking()
-            .Where(o => o.User.PublicId == userPublicId)
+            .Where(o => o.UserId == user.Id)
             .ToListAsync();
 
         if (userOrders.Count == 0)
