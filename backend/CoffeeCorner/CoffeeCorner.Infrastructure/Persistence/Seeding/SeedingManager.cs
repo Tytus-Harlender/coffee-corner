@@ -2,7 +2,7 @@
 
 public static class SeedingManager
 {
-    public static async Task SeedAsync(CoffeeCornerDbContext context)
+    public static async Task SeedAsync(IServiceProvider services, CoffeeCornerDbContext context)
     {
         if (!context.Categories.Any())
         {
@@ -18,7 +18,7 @@ public static class SeedingManager
         }
         if (!context.Users.Any())
         {
-            await UserSeeder.SeedAsync(context);
+            await UserSeeder.SeedAsync(services);
         }
     }
 }

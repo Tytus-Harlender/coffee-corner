@@ -64,6 +64,7 @@ public class UserRepository(CoffeeCornerDbContext context) : IUserRepository
             user.AddressLine2 = command.AddressLine2 ?? user.AddressLine2;
             user.City = command.City ?? user.City;
             user.Country = command.Country ?? user.Country;
+            user.UpdatedAt = DateTime.UtcNow;
 
             await context.SaveChangesAsync();
 

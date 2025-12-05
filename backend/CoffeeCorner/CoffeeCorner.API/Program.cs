@@ -70,7 +70,7 @@ if (app.Environment.IsDevelopment())
     var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
 
     await context.Database.MigrateAsync();
-    await SeedingManager.SeedAsync(context);
+    await SeedingManager.SeedAsync(app.Services, context);
 
     app.MapOpenApi();
 
