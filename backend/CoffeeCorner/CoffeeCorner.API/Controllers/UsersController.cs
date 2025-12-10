@@ -7,6 +7,7 @@ using CoffeeCorner.Application.Features.Users.GetAllUsers;
 using CoffeeCorner.Application.Features.Users.GetUser;
 using CoffeeCorner.Application.Features.Users.UpdateUser;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeeCorner.API.Controllers;
@@ -16,6 +17,7 @@ namespace CoffeeCorner.API.Controllers;
 public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
+    [Authorize(Roles ="Admin")]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers(GetAllUsersQuery query)
     {
         var result = await mediator.Send(query);
@@ -23,6 +25,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{publicId:guid}")]
+    [Authorize]
     public async Task<ActionResult<UserDto>> GetUserAsync([FromRoute] Guid publicId)
     {
         var query = new GetUserQuery(publicId);
@@ -31,6 +34,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{publicId:guid}/orders")]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllUserOrdersAsync([FromRoute] Guid publicId)
     {
         var query = new GetAllUserOrdersQuery(publicId);
@@ -39,6 +43,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles ="Admin")]
     public async Task<ActionResult<UserDto>> CreateUserAsync(CreateUserCommand command)
     {
         var result = await mediator.Send(command);
@@ -46,6 +51,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{publicId:guid}")]
+    [Authorize]
     public async Task<ActionResult> UpdateUserAsync(UpdateUserCommand command, [FromRoute] Guid publicId)
     {
         command.PublicId  = publicId;
@@ -54,6 +60,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{publicId:guid}")]
+    [Authorize]
     public async Task<ActionResult> DeleteUserAsync([FromRoute] Guid publicId)
     {
         var command = new DeleteUserCommand(publicId);
