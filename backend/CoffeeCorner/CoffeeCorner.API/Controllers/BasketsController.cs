@@ -10,7 +10,7 @@ namespace CoffeeCorner.API.Controllers;
 
 [ApiController]
 [Route("api/v1/users")]
-public class BasketsController(IMediator mediator) : Controller
+public class BasketsController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{publicId:guid}/basket")]
     [Authorize]

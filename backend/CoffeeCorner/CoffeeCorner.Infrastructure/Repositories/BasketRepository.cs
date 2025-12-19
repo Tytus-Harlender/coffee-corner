@@ -55,4 +55,11 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
             .Where(bi => bi.BasketId == basket.Id && bi.Product.PublicId == productPublicId)
             .ForEachAsync(bi => bi.IsDeleted = true);
     }
+
+    public async Task DeleteBasketAsync(Basket basket)
+    {
+        basket.IsDeleted = true;
+
+        context.Baskets.Update(basket);
+    }
 }

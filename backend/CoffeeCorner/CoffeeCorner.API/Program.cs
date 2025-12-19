@@ -5,6 +5,7 @@ using CoffeeCorner.Application.Features.Products.GetAllProducts;
 using CoffeeCorner.Application.Features.Users;
 using CoffeeCorner.Application.Interfaces;
 using CoffeeCorner.Domain.Entities;
+using CoffeeCorner.Domain.Factories;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
@@ -65,6 +66,7 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>((serviceProvider,options) =
 
 
 builder.Services.AddOpenApi("v1");
+builder.Services.AddScoped<IOrderFactory, OrderFactory>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();

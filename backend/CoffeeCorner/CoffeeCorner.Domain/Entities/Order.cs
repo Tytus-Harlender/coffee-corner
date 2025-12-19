@@ -2,9 +2,23 @@
 
 public class Order : BaseEntity
 {
-    public string Status { get; set; } = string.Empty;
-    public decimal TotalAmount { get; set; }
+    private readonly List<OrderItem> _items = [];
+    public string Status { get; private set; } = string.Empty;
+    public decimal TotalAmount => _items.Sum(i => i.Quantity * i.UnitPrice);
 
-    public ICollection<OrderItem> OrderItems { get; set; } = [];
-    public int UserId { get; set; }
+    public IReadOnlyCollection<OrderItem> Items => _items;
+    public int UserId { get; private set; }
+
+    internal void AddItem(OrderItem item)
+    {
+        if (item is null)
+            { throw new ArgumentNullException("item"); }
+
+        if (item.Quantity <= 0)
+        {
+            throw new Exception("Item quantity cannot be less then 1");
+        }
+
+        _items.Add(item);
+    }
 }

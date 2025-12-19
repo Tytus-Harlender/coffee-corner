@@ -18,7 +18,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.TotalAmount)
             .IsRequired();
         
-        builder.HasMany(o => o.OrderItems)
+        builder.HasMany(o => o.Items)
             .WithOne(oi => oi.Order)
             .HasForeignKey("OrderId")
             .OnDelete(DeleteBehavior.Cascade);
