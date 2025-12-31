@@ -86,7 +86,7 @@ if (app.Environment.IsDevelopment())
 
     app.UseSwaggerUI(options => {
 
-        options.SwaggerEndpoint("https://localhost:44347/openapi/v1.json", "Openapi V1");
+        options.SwaggerEndpoint("https://localhost:7159/openapi/v1.json", "Openapi V1");
     });
 }
 
