@@ -14,9 +14,9 @@ public class ProductsController(IMediator mediator) : ControllerBase
     [HttpGet]
     [AllowAnonymous]
     [ProducesResponseType(typeof(IEnumerable<ProductDto>), StatusCodes.Status200OK)]
-    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts(GetAllProductsQuery command)
+    public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
     {
-        var result = await mediator.Send(command);
+        var result = await mediator.Send(new GetAllProductsQuery());
         return Ok(result);
     }
 
