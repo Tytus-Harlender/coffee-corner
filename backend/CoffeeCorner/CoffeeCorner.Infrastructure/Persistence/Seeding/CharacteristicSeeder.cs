@@ -2,7 +2,7 @@
 
 namespace CoffeeCorner.Infrastructure.Persistence.Seeding;
 
-public class CharacteristicSeeder
+public static class CharacteristicSeeder
 {
     public static async Task SeedAsync(CoffeeCornerDbContext context)
     {
@@ -15,49 +15,17 @@ public class CharacteristicSeeder
     {
         var characteristics = new List<Characteristic>();
 
-        var roastLevel = new Characteristic
-        {
-            Name = "Roast Level",
-            CharacteristicValues =
-            [
-                new() { Value = "Light" },
-                new() { Value = "Medium" },
-                new() { Value = "Dark" }
-            ]
-        };
+        var roastLevel = new Characteristic("Roast Level");
+        roastLevel.AddValues(["Light","Medium","Dark"]);
 
-        var flavorProfile = new Characteristic
-        {
-            Name = "Flavor Profile",
-            CharacteristicValues =
-            [
-                new() { Value = "Fruity" },
-                new() { Value = "Nutty" },
-                new() { Value = "Chocolatey" }
-            ]
-        };
+        var flavorProfile = new Characteristic("Flavor Profile");
+        flavorProfile.AddValues(["Fruity", "Nutty", "Chocolatey"]);
 
-        var origin = new Characteristic
-        {
-            Name = "Origin",
-            CharacteristicValues =
-            [
-                new() { Value = "Ethiopia" },
-                new() { Value = "Brazil" },
-                new() { Value = "Colombia" }
-            ]
-        };
+        var origin = new Characteristic("Origin");
+        origin.AddValues(["Ethiopia", "Brazil", "Colombia"]);
 
-        var acidity = new Characteristic
-        {
-            Name = "Acidity",
-            CharacteristicValues =
-            [
-                new() { Value = "Mild" },
-                new() { Value = "Bright" },
-                new() { Value = "Sour" }
-            ]
-        };
+        var acidity = new Characteristic("Acidity");
+        acidity.AddValues(["Mild", "Bright", "Sour"]);
 
         characteristics.AddRange(roastLevel, flavorProfile, origin, acidity);
 

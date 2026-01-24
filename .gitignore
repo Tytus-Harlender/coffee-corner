@@ -15,3 +15,5 @@ node_modules/
 #Other
 /backend/CoffeeCorner/CoffeeCorner.API/appsettings.Development.json
 /.config/dotnet-tools.json
+#Temporarly excluded
+/frontend

@@ -19,6 +19,6 @@ public class ProductRepository(CoffeeCornerDbContext dbContext) : IProductReposi
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.PublicId == publicId);
 
-        return product is null ? new Product() : product;
+        return product ?? throw new Exception("Product not found");
     }
 }

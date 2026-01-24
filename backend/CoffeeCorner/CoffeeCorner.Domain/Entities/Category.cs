@@ -1,10 +1,28 @@
-﻿namespace CoffeeCorner.Domain.Entities;
+﻿using CoffeeCorner.Domain.Exceptions;
 
-public class Category : BaseEntity
+namespace CoffeeCorner.Domain.Entities;
+
+public sealed class Category : BaseEntity
 {
-    public string Name { get; set; } = string.Empty;
+    public string Name { get; private set; } = string.Empty;
+    public Category? ParentCategory { get; private set; }
+    public ICollection<Category> SubCategories { get; private set; } = [];
 
-    public Category? ParentCategory { get; set; }
-    public ICollection<Category>? SubCategories { get; set; }
-    public ICollection<Product> Products { get; set; } = [];
+    private Category()
+    {
+    }
+
+    public Category(
+        string name,
+        Category? parent = null)
+    {
+        if (string.IsNullOrEmpty(name))
+            throw new CategoryCreationException("Category name cannot be null or empty.");
+
+        Name = name.Trim();
+
+        if (parent is null) return;
+        ParentCategory = parent;
+        parent.SubCategories.Add(this);
+    }
 }

@@ -2,7 +2,7 @@
 
 namespace CoffeeCorner.Infrastructure.Persistence.Seeding;
 
-public class CategorySeeder
+public static class CategorySeeder
 {
     public static async Task SeedAsync(CoffeeCornerDbContext context)
     {
@@ -15,45 +15,31 @@ public class CategorySeeder
     {
         var categories = new List<Category>();
 
-        var coffeeCategory = new Category
-        {
-            Name = "Coffee",
-            SubCategories = []
-        };
+        //coffee category hierarchy
+        var coffeeCategory = new Category("Coffee", null);
 
-        var wholeBean = new Category {Name = "Whole Bean", ParentCategory = coffeeCategory };
-        var groundCoffee = new Category {Name = "Ground Coffee", ParentCategory = coffeeCategory };
-        var capsulesPods = new Category {Name = "Capsules & Pods", ParentCategory = coffeeCategory };
-        var decaf = new Category {Name = "Decaf", ParentCategory = coffeeCategory };
-        var instantCoffee = new Category {Name = "Instant Coffee", ParentCategory = coffeeCategory };
-        var samplePacks = new Category {Name = "Sample Packs", ParentCategory = coffeeCategory };
-
-        coffeeCategory.SubCategories = [wholeBean, groundCoffee, capsulesPods, decaf, instantCoffee, samplePacks];
+        var wholeBean = new Category("Whole Bean", coffeeCategory);
+        var groundCoffee = new Category("Ground Coffee", coffeeCategory);
+        var capsulesPods = new Category("Capsules & Pods", coffeeCategory);
+        var decaf = new Category("Decaf", coffeeCategory);
+        var instantCoffee = new Category("Instant Coffee", coffeeCategory);
+        var samplePacks = new Category("Sample Packs", coffeeCategory);
 
         categories.AddRange([coffeeCategory, wholeBean, groundCoffee, capsulesPods, decaf, instantCoffee, samplePacks]);
 
-        var brewingEquipment = new Category
-        {
-            Name = "Brewing Equipment",
-            SubCategories = []
-        };
+        // Brewing Equipment category hierarchy
+        var brewingEquipment = new Category("Brewing Equipment");
 
-        var manualBrewing = new Category {Name = "Manual Brewing", ParentCategory = brewingEquipment };
-        var espressoMachines = new Category {Name = "Espresso Machines", ParentCategory = brewingEquipment };
-        var coffeeGrinders = new Category {Name = "Coffee Grinders", ParentCategory = brewingEquipment };
-        var coldBrewMakers = new Category {Name = "Cold Brew Makers", ParentCategory = brewingEquipment };
+        var manualBrewing = new Category("Manual Brewing", brewingEquipment);
+        var espressoMachines = new Category("Espresso Machines", brewingEquipment);
+        var coffeeGrinders = new Category("Coffee Grinders", brewingEquipment);
+        var coldBrewMakers = new Category("Cold Brew Makers", brewingEquipment);
 
-        var frenchPress = new Category {Name = "French Press", ParentCategory = manualBrewing };
-        var pourOver = new Category {Name = "Pour Over", ParentCategory = manualBrewing };
-        var mokkaPot = new Category {Name = "Mokka Pot", ParentCategory = manualBrewing };
-        var aeroPress = new Category {Name = "AeroPress", ParentCategory = manualBrewing };
-
-        manualBrewing.SubCategories = [frenchPress, pourOver, mokkaPot, aeroPress];
-
-        brewingEquipment.SubCategories = [
-            manualBrewing, espressoMachines, coffeeGrinders, coldBrewMakers
-        ];
-
+        var frenchPress = new Category("French Press", manualBrewing);
+        var pourOver = new Category("Pour Over", manualBrewing);
+        var mokkaPot = new Category("Mokka Pot", manualBrewing);
+        var aeroPress = new Category("AeroPress", manualBrewing);
+        
         categories.AddRange([brewingEquipment, manualBrewing, espressoMachines, coffeeGrinders, coldBrewMakers, frenchPress, pourOver, mokkaPot, aeroPress]);
 
         return categories;

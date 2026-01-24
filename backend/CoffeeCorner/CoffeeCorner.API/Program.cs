@@ -1,5 +1,6 @@
 using System.Text;
 using CoffeeCorner.Application.Features.Baskets;
+using CoffeeCorner.Application.Features.Orders;
 using CoffeeCorner.Application.Features.Products;
 using CoffeeCorner.Application.Features.Products.GetAllProducts;
 using CoffeeCorner.Application.Features.Users;
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IOrderFactory, OrderFactory>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddCors(options =>

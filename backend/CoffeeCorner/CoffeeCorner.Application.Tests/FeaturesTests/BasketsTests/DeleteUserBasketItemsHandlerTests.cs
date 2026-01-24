@@ -20,7 +20,7 @@ public class DeleteUserBasketItemsHandlerTests
         var handler = new DeleteUserBasketItemsHandler(basketRepository, unitOfWork);
 
         var testingBasket = new Basket();
-        List<BasketItem> basketItems = [ new(testingBasket, new Product() { PublicId = productPublicId }, 4, 11.99m)];
+        List<BasketItem> basketItems = [ new(testingBasket, new Product(productPublicId, "TestProduct", 4m, 12), 8, 2m)];
         basketRepository.GetUserBasketAsync(Arg.Any<Guid>(), Arg.Any<bool>())
             .Returns(new Basket() { BasketItems = basketItems});
         basketRepository.UpdateBasketAsync(Arg.Any<Basket>()).Returns(Task.CompletedTask);

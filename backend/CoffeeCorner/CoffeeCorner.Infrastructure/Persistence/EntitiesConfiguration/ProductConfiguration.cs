@@ -16,7 +16,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsRequired();
 
         builder.HasMany(p => p.Categories)
-            .WithMany(c => c.Products)
+            .WithMany()
             .UsingEntity<Dictionary<string, object>>(
             "ProductCategory",
             j => j.HasOne<Category>()
@@ -29,7 +29,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                     .OnDelete(DeleteBehavior.Restrict));
 
         builder.HasMany(p => p.CharacteristicValues)
-            .WithMany(cv => cv.Products)
+            .WithMany()
             .UsingEntity<Dictionary<string, object>>(
             "ProductCharacteristicValue",
             j => j.HasOne<CharacteristicValue>()

@@ -30,9 +30,9 @@ public class AddUserBasketItemsHandlerTests
             }
         ];
         basketRepository.GetUserBasketAsync(Arg.Any<Guid>(), Arg.Any<bool>())
-            .Returns(new Basket() { Id = 0 });
+            .Returns(new Basket());
         basketRepository.AddBasketAsync(Arg.Any<Basket>()).Returns(Task.CompletedTask);
-        productRepository.GetProductAsync(Arg.Any<Guid>()).Returns(new Product() { Id = 1, PublicId = Guid.NewGuid(), Name = "Test Coffee", Price = 10.0m });
+        productRepository.GetProductAsync(Arg.Any<Guid>()).Returns(new Product(Guid.NewGuid(), "Test Coffee", 10.0m, 15 ));
         unitOfWork.SaveChangesAsync().Returns(Task.CompletedTask);
 
         //Act

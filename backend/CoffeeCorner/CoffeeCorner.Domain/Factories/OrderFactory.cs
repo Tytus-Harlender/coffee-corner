@@ -7,21 +7,13 @@ public class OrderFactory : IOrderFactory
     public Order CreateOrderFromBasket(Basket basket)
     {
         if (basket == null || basket.BasketItems.Count == 0)
-            throw new ArgumentNullException("Basket can be neither null nor empty");
+            throw new ArgumentNullException(nameof(basket), "Basket cannot be null or empty.");
 
         var order = new Order();
 
         foreach (var item in basket.BasketItems)
         {
-            var orderItem = new OrderItem()
-            {
-                Quantity = item.Quantity,
-                Product = item.Product,
-                UnitPrice = item.UnitPrice,
-                UpdatedAt = item.UpdatedAt,
-                CreatedAt = item.CreatedAt,
-                IsDeleted = item.IsDeleted,
-            };
+            var orderItem = new OrderItem(order,  item.Product, item.Quantity, item.UnitPrice);
             order.AddItem(orderItem);
         }
 
