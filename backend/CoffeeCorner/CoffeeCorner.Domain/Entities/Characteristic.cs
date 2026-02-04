@@ -16,7 +16,7 @@ public class Characteristic : BaseEntity
         string name)
     {        
         if (string.IsNullOrWhiteSpace(name))
-            throw new CharacteristicCreationException("Characteristic name cannot be null or empty.");
+            throw new CharacteristicCreationException("Characteristic name cannot be null, empty or whitespace.");
 
         Name = name;
     }
