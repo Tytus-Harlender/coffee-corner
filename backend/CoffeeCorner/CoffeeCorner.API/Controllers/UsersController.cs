@@ -18,7 +18,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [Authorize(Roles ="Admin")]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetAllUsers(GetAllUsersQuery query)
+    public async Task<ActionResult<IEnumerable<CustomerDto>>> GetAllUsers(GetAllUsersQuery query)
     {
         var result = await mediator.Send(query);
         return Ok(result);
@@ -26,7 +26,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpGet("{publicId:guid}")]
     [Authorize]
-    public async Task<ActionResult<UserDto>> GetUserAsync([FromRoute] Guid publicId)
+    public async Task<ActionResult<CustomerDto>> GetUserAsync([FromRoute] Guid publicId)
     {
         var query = new GetUserQuery(publicId);
         var result = await mediator.Send(query);
@@ -44,7 +44,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     [Authorize(Roles ="Admin")]
-    public async Task<ActionResult<UserDto>> CreateUserAsync(CreateUserCommand command)
+    public async Task<ActionResult<CustomerDto>> CreateUserAsync(CreateCustomerCommand command)
     {
         var result = await mediator.Send(command);
         return CreatedAtAction(nameof(GetUserAsync), new { publicId = result.PublicId }, result);

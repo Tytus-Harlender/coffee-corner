@@ -1,13 +1,11 @@
 ﻿using CoffeeCorner.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Infrastructure.Persistence;
 
-public class CoffeeCornerDbContext(DbContextOptions<CoffeeCornerDbContext> options)
-        : IdentityDbContext<User, IdentityRole<int>, int>(options)
+public class CoffeeCornerDbContext(DbContextOptions options) : DbContext(options)
 {
+    public DbSet<Customer> Customers  { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Characteristic> Characteristics { get; set; }

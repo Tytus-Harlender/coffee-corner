@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeCorner.Infrastructure
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeCorner.Domain.Tests", "CoffeeCorner.Domain.Tests\CoffeeCorner.Domain.Tests.csproj", "{608003C3-9C07-43AB-AC01-01FB40BFBD14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeCorner.Identity", "CoffeeCorner.Identity\CoffeeCorner.Identity.csproj", "{02364EAD-4AE2-45B5-8F75-23D80FB70880}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{608003C3-9C07-43AB-AC01-01FB40BFBD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{608003C3-9C07-43AB-AC01-01FB40BFBD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{608003C3-9C07-43AB-AC01-01FB40BFBD14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02364EAD-4AE2-45B5-8F75-23D80FB70880}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02364EAD-4AE2-45B5-8F75-23D80FB70880}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02364EAD-4AE2-45B5-8F75-23D80FB70880}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02364EAD-4AE2-45B5-8F75-23D80FB70880}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{23CDA75E-FE28-47AD-A4B6-F7A31DB3843E} = {386D6112-0439-4CD0-B6A8-0823CA0B0ADF}
 		{5E546F9E-CD39-4907-9C4F-2F00B5913339} = {386D6112-0439-4CD0-B6A8-0823CA0B0ADF}
 		{608003C3-9C07-43AB-AC01-01FB40BFBD14} = {386D6112-0439-4CD0-B6A8-0823CA0B0ADF}
+		{02364EAD-4AE2-45B5-8F75-23D80FB70880} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24597235-EF29-4909-97E9-74E267D440EA}

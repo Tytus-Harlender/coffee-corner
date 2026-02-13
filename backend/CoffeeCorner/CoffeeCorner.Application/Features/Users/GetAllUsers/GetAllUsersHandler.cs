@@ -2,12 +2,12 @@
 
 namespace CoffeeCorner.Application.Features.Users.GetAllUsers;
 
-public class GetAllUsersHandler(IUserRepository userRepository) : IRequestHandler<GetAllUsersQuery, IEnumerable<UserDto>>
+public class GetAllUsersHandler(ICustomerRepository customerRepository) : IRequestHandler<GetAllUsersQuery, IEnumerable<CustomerDto>>
 {
-    public async Task<IEnumerable<UserDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<CustomerDto>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
     {
-        var result = await userRepository.GetAllUsersAsync();
+        var result = await customerRepository.GetAllCustomersAsync();
 
-        return [.. result.Select(u => new UserDto() { PublicId = u.PublicId, Name = u.Name, Surname = u.Surname, Email = u.Email })];
+        return [.. result.Select(u => new CustomerDto() { PublicId = u.PublicId, Name = u.Name, Surname = u.Surname, Email = u.Email })];
     }
 }

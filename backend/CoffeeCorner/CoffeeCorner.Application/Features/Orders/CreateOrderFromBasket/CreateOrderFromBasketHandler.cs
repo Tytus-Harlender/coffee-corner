@@ -8,13 +8,13 @@ public class CreateOrderFromBasketHandler(IBasketRepository basketRepository, IO
 {
     public async Task<OrderDto> Handle(CreateOrderFromBasketCommand request, CancellationToken cancellationToken)
     {
-        var basket = await basketRepository.GetUserBasketAsync(request.BasketPublicId) ?? throw new Exception("Basket not found");
+        var basket = await basketRepository.GetBasketAsync(request.BasketPublicId) ?? throw new Exception("Basket not found");
 
         var order = orderFactory.CreateOrderFromBasket(basket);
 
         await orderRepository.AddAsync(order);
         
-        await basketRepository.DeleteBasketAsync(basket);
+        basketRepository.DeleteBasket(basket);
 
         return new OrderDto();
     }

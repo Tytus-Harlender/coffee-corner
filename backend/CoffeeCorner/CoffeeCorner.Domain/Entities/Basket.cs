@@ -2,7 +2,7 @@
 
 public class Basket : BaseEntity
 {
-    public int UserId { get; set; }
+    public int CustomerId { get; set; }
     public ICollection<BasketItem> BasketItems { get; set; } = [];
 
     public decimal GetTotalPrice()
