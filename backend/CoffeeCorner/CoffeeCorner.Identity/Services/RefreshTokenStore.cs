@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Identity.Services;
 
-public sealed class RefreshTokenStore(IdentityDbContext context) : IRefreshTokenStore
+public sealed class RefreshTokenStore(AuthDbContext context) : IRefreshTokenStore
 {
-    private readonly IdentityDbContext _context = context;
+    private readonly AuthDbContext _context = context;
 
     public async Task StoreAsync(string userId, string refreshToken, DateTime expiresAt, CancellationToken ct)
     {

@@ -1,22 +1,25 @@
 using CoffeeCorner.Identity.Helpers;
 using CoffeeCorner.Identity.Interfaces;
 using CoffeeCorner.Identity.Interfaces.Models;
+using CoffeeCorner.Identity.Persistence.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using IdentityOptions = CoffeeCorner.Identity.Configuration.IdentityOptions;
 
 namespace CoffeeCorner.Identity.Services;
 
 public class IdentityService(
-    UserManager<IdentityUser> userManager,
+    UserManager<User> userManager,
     ITokenService tokenService,
     IRefreshTokenStore refreshStore,
-    IdentityOptions options) : IIdentityService
+    IOptions<IdentityOptions> options) : IIdentityService
 {
     public async Task<TokenResult> RegisterAsync(RegisterRequest request, CancellationToken ct)
     {
-        var user = new IdentityUser
+        var user = new User
         {
+            PublicId = Guid.NewGuid(),
             UserName = request.Email,
             Email = request.Email
         };
@@ -42,7 +45,7 @@ public class IdentityService(
 
     public async Task<TokenResult> RefreshAsync(RefreshTokenRequest request, CancellationToken ct)
     {
-        var principal = JwtHelper.GetPrincipalFromExpiredToken(request.AccessToken, options);
+        var principal = JwtHelper.GetPrincipalFromExpiredToken(request.AccessToken, options.Value);
 
         var userId = principal.FindFirst("sub")!.Value;
 
@@ -59,7 +62,7 @@ public class IdentityService(
     public async Task<bool> DeleteUserAsync(Guid publicUserId, CancellationToken ct)
     {
         var user = await userManager.Users
-            .FirstOrDefaultAsync(x => x.Id == publicUserId.ToString(), ct);
+            .FirstOrDefaultAsync(x => x.PublicId == publicUserId, ct);
 
         if (user is null)
             return false;
@@ -68,13 +71,13 @@ public class IdentityService(
         return true;
     }
 
-    private async Task<TokenResult> GenerateTokenAsync(IdentityUser user, CancellationToken ct)
+    private async Task<TokenResult> GenerateTokenAsync(User user, CancellationToken ct)
     {
         var roles = await userManager.GetRolesAsync(user);
 
         return await tokenService.GenerateTokensAsync(
             user.Id,
-            Guid.Parse(user.Id),
+            user.PublicId,
             user.Email!,
             roles,
             ct);

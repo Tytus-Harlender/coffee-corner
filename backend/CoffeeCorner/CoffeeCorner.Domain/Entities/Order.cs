@@ -7,7 +7,7 @@ public class Order : BaseEntity
     public decimal TotalAmount { get; private set; } =  decimal.Zero;
 
     public IReadOnlyCollection<OrderItem> Items => _items;
-    public int CustomerId { get; private set; }
+    public int CustomerId { get; init; }
 
     internal void AddItem(OrderItem item)
     {

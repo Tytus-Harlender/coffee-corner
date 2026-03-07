@@ -5,8 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Identity.Persistence;
 
-public class IdentityDbContext(DbContextOptions<IdentityDbContext> options)
-    : IdentityDbContext<IdentityUser<int>, IdentityRole<int>, int>(options)
+public class AuthDbContext(DbContextOptions<AuthDbContext> options)
+    : IdentityDbContext<User, IdentityRole<int>, int>(options)
 {
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
@@ -14,7 +14,7 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options)
     {
         base.OnModelCreating(builder);
 
-        builder.ApplyConfigurationsFromAssembly(typeof(IdentityDbContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(AuthDbContext).Assembly);
         builder.HasDefaultSchema("identity");
     }
 }

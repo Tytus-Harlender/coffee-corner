@@ -5,7 +5,7 @@ namespace CoffeeCorner.Identity.Interfaces;
 public interface ITokenService
 {
     Task<TokenResult> GenerateTokensAsync(
-        string userId,
+        int userId,
         Guid publicUserId,
         string email,
         IList<string> roles,

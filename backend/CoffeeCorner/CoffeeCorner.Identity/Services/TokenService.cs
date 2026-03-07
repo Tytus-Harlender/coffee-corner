@@ -17,7 +17,7 @@ public sealed class TokenService(
     private readonly IdentityOptions _options = options.Value;
 
     public async Task<TokenResult> GenerateTokensAsync(
-        string userId,
+        int userId,
         Guid publicUserId,
         string email,
         IList<string> roles,
@@ -30,7 +30,7 @@ public sealed class TokenService(
 
         var claims = new List<Claim>
         {
-            new("sub", userId),
+            new("sub", userId.ToString()),
             new("email", email),
             new("publicId", publicUserId.ToString())
         };
@@ -51,7 +51,7 @@ public sealed class TokenService(
         var refreshToken = Guid.NewGuid().ToString("N");
 
         await refreshStore.StoreAsync(
-            userId,
+            userId.ToString(),
             refreshToken,
             DateTime.UtcNow.AddDays(_options.RefreshTokenDays),
             ct);

@@ -20,19 +20,5 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(p => p.Surname)
             .IsRequired()
             .HasMaxLength(100);
-        
-        builder
-            .HasMany<Basket>()
-            .WithOne()
-            .HasForeignKey(b => b.CustomerId)
-            .HasPrincipalKey(p => p.Id)
-            .OnDelete(DeleteBehavior.Cascade);
-        
-        builder
-            .HasMany<Order>()
-            .WithOne()
-            .HasForeignKey(o => o.CustomerId)
-            .HasPrincipalKey(p => p.Id)
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

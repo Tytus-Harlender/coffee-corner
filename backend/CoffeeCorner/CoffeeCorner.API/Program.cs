@@ -7,6 +7,7 @@ using CoffeeCorner.Application.Features.Users;
 using CoffeeCorner.Application.Interfaces;
 using CoffeeCorner.Domain.Factories;
 using CoffeeCorner.Identity.Configuration;
+using CoffeeCorner.Identity.Persistence;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
@@ -83,8 +84,10 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
+    var identityContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
 
     await context.Database.MigrateAsync();
+    await identityContext.Database.MigrateAsync();
     await SeedingManager.SeedAsync(app.Services, context);
 
     app.MapOpenApi();

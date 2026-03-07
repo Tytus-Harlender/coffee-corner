@@ -25,7 +25,7 @@ public static class CustomerSeeder
 
     private static List<Customer> GetInitialUsers()
     {
-        List<Customer> users = [
+        List<Customer> customers = [
             new ("Alice", "Johnson", "alice.johnson@example.com", "123 Maple St", null, "New York", "USA", "+1-555-123-4567")
             {
                 PublicId = Guid.NewGuid()
@@ -66,6 +66,6 @@ public static class CustomerSeeder
             //     Country = "UK"
             // }, password: "NoNeedForThat3")];
 
-        return users;
+        return customers;
     }
 }
