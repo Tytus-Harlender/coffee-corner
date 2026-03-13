@@ -392,13 +392,11 @@ namespace CoffeeCorner.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoffeeCorner.Domain.Entities.Product", "Product")
+                    b.HasOne("CoffeeCorner.Domain.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("CoffeeCorner.Domain.Entities.Category", b =>
@@ -439,13 +437,11 @@ namespace CoffeeCorner.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CoffeeCorner.Domain.Entities.Product", "Product")
+                    b.HasOne("CoffeeCorner.Domain.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ProductCategory", b =>

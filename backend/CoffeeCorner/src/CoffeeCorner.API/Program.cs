@@ -14,6 +14,7 @@ using CoffeeCorner.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,8 +60,6 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
     }
 });
 
-
-builder.Services.AddOpenApi("v1");
 builder.Services.AddScoped<IOrderFactory, OrderFactory>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
@@ -78,6 +77,41 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "CoffeeCorner API",
+        Version = "v1"
+    });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter: Bearer {token}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            []
+        }
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -90,11 +124,10 @@ if (app.Environment.IsDevelopment())
     await identityContext.Database.MigrateAsync();
     await SeedingManager.SeedAsync(app.Services, context);
 
-    app.MapOpenApi();
-
-    app.UseSwaggerUI(options => {
-
-        options.SwaggerEndpoint("https://localhost:7159/openapi/v1.json", "Openapi V1");
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "CoffeeCorner API v1");
     });
 }
 

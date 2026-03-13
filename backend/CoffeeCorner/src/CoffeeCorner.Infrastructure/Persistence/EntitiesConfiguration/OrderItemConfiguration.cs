@@ -10,5 +10,10 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
     {
         builder.ToTable("OrderItems");
         builder.HasKey(oi => oi.Id);
+        
+        builder.HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(oi => oi.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }

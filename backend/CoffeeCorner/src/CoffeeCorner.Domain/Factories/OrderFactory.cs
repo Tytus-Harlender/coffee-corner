@@ -9,11 +9,11 @@ public class OrderFactory : IOrderFactory
         if (basket == null || basket.BasketItems.Count == 0)
             throw new ArgumentNullException(nameof(basket), "Basket cannot be null or empty.");
 
-        var order = new Order();
+        var order = new Order(basket.CustomerId);
 
         foreach (var item in basket.BasketItems)
         {
-            var orderItem = new OrderItem(order,  item.Product, item.Quantity, item.UnitPrice);
+            var orderItem = new OrderItem(order,  item.ProductId, item.Quantity, item.UnitPrice);
             order.AddItem(orderItem);
         }
 

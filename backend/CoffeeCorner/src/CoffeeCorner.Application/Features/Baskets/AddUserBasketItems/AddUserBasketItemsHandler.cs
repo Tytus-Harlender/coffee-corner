@@ -10,18 +10,27 @@ public class AddUserBasketItemsHandler(IBasketRepository basketRepository, IProd
     {
         var basket = await basketRepository.GetBasketAsync(request.UserPublicId);
 
+        var products =
+            await productRepository.GetProductsByPublicIdsAsync(request.Items.Select(i => i.ProductPublicId));
+        
         foreach (var item in request.Items)
         {
-            var product = await productRepository.GetProductAsync(item.ProductPublicId);
-            basket.AddItem(product, item.Quantity, item.UnitPrice);
+            basket.AddItem(products[item.ProductPublicId].Id, item.Quantity, item.UnitPrice);
         }
 
         if (basket.Id == 0)
             await basketRepository.AddBasketAsync(basket);
         else
             await basketRepository.UpdateBasketAsync(basket);
+        
+        var productIds = basket.BasketItems
+            .Select(bi => bi.ProductId)
+            .Distinct()
+            .ToList();
 
+        var publicIds = await productRepository.GetProductsPublicIdsAsync(productIds);
+        
         await unitOfWork.SaveChangesAsync(cancellationToken);
-        return [.. basket.BasketItems.Select(bi => new BasketItemDto() { ProductPublicId = bi.Product.PublicId, Quantity = bi.Quantity, UnitPrice = bi.UnitPrice })];
+        return [.. basket.BasketItems.Select(bi => new BasketItemDto() { ProductPublicId = publicIds[bi.ProductId], Quantity = bi.Quantity, UnitPrice = bi.UnitPrice })];
     }
 }

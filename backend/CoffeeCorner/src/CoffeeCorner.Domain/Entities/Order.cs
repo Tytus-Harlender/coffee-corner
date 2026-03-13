@@ -1,13 +1,13 @@
 ﻿namespace CoffeeCorner.Domain.Entities;
 
-public class Order : BaseEntity
+public class Order(int customerId) : BaseEntity
 {
     private readonly List<OrderItem> _items = [];
     public string Status { get; private set; } = string.Empty;
     public decimal TotalAmount { get; private set; } =  decimal.Zero;
 
     public IReadOnlyCollection<OrderItem> Items => _items;
-    public int CustomerId { get; init; }
+    public int CustomerId { get; init; } = customerId;
 
     internal void AddItem(OrderItem item)
     {

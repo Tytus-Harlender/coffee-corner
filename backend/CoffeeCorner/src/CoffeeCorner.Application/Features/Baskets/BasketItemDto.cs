@@ -1,8 +1,8 @@
 ﻿namespace CoffeeCorner.Application.Features.Baskets;
 
-public class BasketItemDto
+public record BasketItemDto
 {
-    public Guid ProductPublicId { get; set; }
-    public int Quantity { get; set; }
-    public decimal UnitPrice { get; set; }
+    public Guid ProductPublicId { get; init; }
+    public int Quantity { get; init; }
+    public decimal UnitPrice { get; init; }
 }

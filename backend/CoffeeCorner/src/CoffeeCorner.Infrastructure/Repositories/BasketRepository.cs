@@ -28,8 +28,7 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
 
         IQueryable<Basket> query = context.Baskets
             .Where(b => b.CustomerId == customer.Id && !b.IsDeleted)
-            .Include(b => b.BasketItems.Where(bi => bi.Quantity > 0))
-                .ThenInclude(bi => bi.Product);
+            .Include(b => b.BasketItems.Where(bi => bi.Quantity > 0));
 
         if (asNoTracking)
             query = query.AsNoTracking();
@@ -51,8 +50,13 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
 
     public async Task DeleteBasketItemAsync(Basket basket, Guid productPublicId)
     {
+        var product = context.Products.FirstOrDefault(p => p.PublicId == productPublicId);
+        
+        if (product is null)
+            throw new Exception($"{nameof(product)} is null");
+        
         await context.BasketItems
-            .Where(bi => bi.BasketId == basket.Id && bi.Product.PublicId == productPublicId)
+            .Where(bi => bi.BasketId == basket.Id && bi.ProductId == product.Id)
             .ForEachAsync(bi => bi.IsDeleted = true);
     }
 

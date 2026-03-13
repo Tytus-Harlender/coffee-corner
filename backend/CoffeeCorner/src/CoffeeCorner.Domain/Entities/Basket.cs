@@ -10,11 +10,9 @@ public class Basket : BaseEntity
         return BasketItems.Sum(item => item.UnitPrice * item.Quantity);
     }
 
-    public void AddItem(Product product, int quantity, decimal unitPrice)
+    public void AddItem(int productId, int quantity, decimal unitPrice)
     {
-        ArgumentNullException.ThrowIfNull(product);
-
-        var existingItem = BasketItems.FirstOrDefault(item => item.Product.Id == product.Id);
+        var existingItem = BasketItems.FirstOrDefault(item => item.ProductId == productId);
 
         if (existingItem != null)
         {
@@ -22,21 +20,21 @@ public class Basket : BaseEntity
         }
         else
         {
-            BasketItems.Add(new BasketItem(this, product, quantity, unitPrice));
+            BasketItems.Add(new BasketItem(this, productId, quantity, unitPrice));
         }
     }
 
-    public void AddItems(IEnumerable<(Product product, int quantity, decimal unitPrice)> items)
+    public void AddItems(IEnumerable<(int productId, int quantity, decimal unitPrice)> items)
     {
-        foreach (var (product, quantity, unitPrice) in items)
+        foreach (var (productId, quantity, unitPrice) in items)
         {
-            AddItem(product, quantity, unitPrice);
+            AddItem(productId, quantity, unitPrice);
         }
     }
 
-    public void DeleteItem(Guid productPublicId)
+    public void DeleteItem(int productId)
     {
-        var existingItem = BasketItems.Where(bi => bi.Product.PublicId == productPublicId).FirstOrDefault();
+        var existingItem = BasketItems.FirstOrDefault(bi => bi.ProductId == productId);
 
         if (existingItem != null)
         {

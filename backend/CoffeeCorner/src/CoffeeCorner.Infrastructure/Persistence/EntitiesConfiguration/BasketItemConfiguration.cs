@@ -10,5 +10,10 @@ public class BasketItemConfiguration : IEntityTypeConfiguration<BasketItem>
     {
         builder.ToTable("BasketItems");
         builder.HasKey(bi => bi.Id);
+        
+        builder.HasOne<Product>()
+            .WithMany()
+            .HasForeignKey(oi => oi.ProductId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
