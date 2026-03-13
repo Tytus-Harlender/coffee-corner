@@ -2,12 +2,12 @@
 
 namespace CoffeeCorner.Application.Features.Users.UpdateUser;
 
-public class UpdateUserHandler(IUserRepository userRepository) : IRequestHandler<UpdateUserCommand, UserDto>
+public class UpdateUserHandler(ICustomerRepository customerRepository) : IRequestHandler<UpdateUserCommand, CustomerDto>
 {
-    public Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+    public Task<CustomerDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = userRepository.UpdateUserAsync(request).Result;
+        var user = customerRepository.UpdateCustomerAsync(request).Result;
 
-        return Task.FromResult(new UserDto() { PublicId = user.PublicId, Name = user.Name, Surname = user.Surname, Email = user.Email});
+        return Task.FromResult(new CustomerDto() { PublicId = user.PublicId, Name = user.Name, Surname = user.Surname, Email = user.Email});
     }
 }

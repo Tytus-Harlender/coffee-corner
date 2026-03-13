@@ -18,16 +18,16 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
         return Task.CompletedTask;
     }
 
-    public async Task<Basket> GetUserBasketAsync(Guid userPublicId, bool asNoTracking)
+    public async Task<Basket> GetBasketAsync(Guid customerPublicId, bool asNoTracking)
     {
-        var user = await context.Users
-            .FirstOrDefaultAsync(u => u.PublicId == userPublicId);
+        var customer = await context.Customers
+            .FirstOrDefaultAsync(u => u.PublicId == customerPublicId);
 
-        if (user is null)
-            throw new Exception($"{nameof(user)} is null");
+        if (customer is null)
+            throw new Exception($"{nameof(customer)} is null");
 
         IQueryable<Basket> query = context.Baskets
-            .Where(b => b.UserId == user.Id && !b.IsDeleted)
+            .Where(b => b.CustomerId == customer.Id && !b.IsDeleted)
             .Include(b => b.BasketItems.Where(bi => bi.Quantity > 0))
                 .ThenInclude(bi => bi.Product);
 
@@ -41,7 +41,7 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
 
         var newBasket = new Basket()
         {
-            UserId = user.Id
+            CustomerId = customer.Id
         };
 
         await context.Baskets.AddAsync(newBasket);
@@ -56,7 +56,7 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
             .ForEachAsync(bi => bi.IsDeleted = true);
     }
 
-    public async Task DeleteBasketAsync(Basket basket)
+    public void DeleteBasket(Basket basket)
     {
         basket.IsDeleted = true;
 

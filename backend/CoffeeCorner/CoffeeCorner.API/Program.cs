@@ -5,13 +5,13 @@ using CoffeeCorner.Application.Features.Products;
 using CoffeeCorner.Application.Features.Products.GetAllProducts;
 using CoffeeCorner.Application.Features.Users;
 using CoffeeCorner.Application.Interfaces;
-using CoffeeCorner.Domain.Entities;
 using CoffeeCorner.Domain.Factories;
+using CoffeeCorner.Identity.Configuration;
+using CoffeeCorner.Identity.Persistence;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,13 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
-{
-    options.User.RequireUniqueEmail = true;
-    options.Password.RequireNonAlphanumeric = false;
-})
-.AddEntityFrameworkStores<CoffeeCornerDbContext>()
-.AddDefaultTokenProviders();
+builder.Services.AddIdentityModule(builder.Configuration);
 
 builder.Services.AddAuthentication(options => 
 {
@@ -54,7 +48,7 @@ builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllProductsQuery).Assembly);
 });
-builder.Services.AddDbContext<CoffeeCornerDbContext>((serviceProvider,options) =>
+builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 
@@ -69,7 +63,7 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>((serviceProvider,options) =
 builder.Services.AddOpenApi("v1");
 builder.Services.AddScoped<IOrderFactory, OrderFactory>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -90,8 +84,10 @@ if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
+    var identityContext = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
 
     await context.Database.MigrateAsync();
+    await identityContext.Database.MigrateAsync();
     await SeedingManager.SeedAsync(app.Services, context);
 
     app.MapOpenApi();

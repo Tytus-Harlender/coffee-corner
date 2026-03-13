@@ -10,6 +10,11 @@ public class BasketConfiguration : IEntityTypeConfiguration<Basket>
     {
         builder.ToTable("Baskets");
         builder.HasKey(b => b.Id);
+        
+        builder.HasOne<Customer>()
+            .WithMany(c => c.Baskets)
+            .HasForeignKey(b => b.CustomerId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(b => b.BasketItems)
             .WithOne()

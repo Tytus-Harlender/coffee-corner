@@ -1,13 +1,20 @@
-﻿using MediatR;
+﻿using CoffeeCorner.Application.Interfaces;
+using MediatR;
 
 namespace CoffeeCorner.Application.Features.Users.CreateUser;
 
-public class CreateUserHandler(IUserRepository userRepository) : IRequestHandler<CreateUserCommand, UserDto>
+public class CreateUserHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateCustomerCommand, CustomerDto>
 {
-    public Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public async Task<CustomerDto> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
-        var newUserId = userRepository.CreateUserAsync(request);
+        var newUserId = await unitOfWork.CustomerRepository.CreateCustomerAsync(request);
 
-        return Task.FromResult(new UserDto() { PublicId = newUserId.Result });
+        return new CustomerDto()
+        {
+            PublicId = newUserId,
+            Email = "",
+            Name = "",
+            Surname = ""
+        };
     }
 }

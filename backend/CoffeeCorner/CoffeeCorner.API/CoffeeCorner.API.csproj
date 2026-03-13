@@ -24,6 +24,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\CoffeeCorner.Application\CoffeeCorner.Application.csproj" />
+		<ProjectReference Include="..\CoffeeCorner.Identity\CoffeeCorner.Identity.csproj" />
 		<ProjectReference Include="..\CoffeeCorner.Infrastructure\CoffeeCorner.Infrastructure.csproj" />
 	</ItemGroup>
 

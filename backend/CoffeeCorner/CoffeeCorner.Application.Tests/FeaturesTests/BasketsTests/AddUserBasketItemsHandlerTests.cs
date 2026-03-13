@@ -29,11 +29,11 @@ public class AddUserBasketItemsHandlerTests
                 UnitPrice = 10.0m
             }
         ];
-        basketRepository.GetUserBasketAsync(Arg.Any<Guid>(), Arg.Any<bool>())
+        basketRepository.GetBasketAsync(Arg.Any<Guid>(), Arg.Any<bool>())
             .Returns(new Basket());
         basketRepository.AddBasketAsync(Arg.Any<Basket>()).Returns(Task.CompletedTask);
         productRepository.GetProductAsync(Arg.Any<Guid>()).Returns(new Product(Guid.NewGuid(), "Test Coffee", 10.0m, 15 ));
-        unitOfWork.SaveChangesAsync().Returns(Task.CompletedTask);
+        unitOfWork.SaveChangesAsync(cancellationToken).Returns(Task.CompletedTask);
 
         //Act
         var result = handler.Handle(command, cancellationToken);
@@ -41,6 +41,6 @@ public class AddUserBasketItemsHandlerTests
         //Assert
         Assert.NotNull(result);
         basketRepository.Received(1).AddBasketAsync(Arg.Any<Basket>());
-        unitOfWork.Received(1).SaveChangesAsync();
+        unitOfWork.Received(1).SaveChangesAsync(cancellationToken);
     }
 }

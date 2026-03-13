@@ -7,12 +7,12 @@ public class DeleteUserBasketItemsHandler(IBasketRepository basketRepository, IU
 {
     public async Task<Unit> Handle(DeleteUserBasketItemsCommand request, CancellationToken cancellationToken)
     {
-        var basket = await basketRepository.GetUserBasketAsync(request.UserPublicId);
+        var basket = await basketRepository.GetBasketAsync(request.UserPublicId);
     
         basket.DeleteItem(request.ProductPublicId);
 
         await basketRepository.UpdateBasketAsync(basket);
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return Unit.Value;
     }

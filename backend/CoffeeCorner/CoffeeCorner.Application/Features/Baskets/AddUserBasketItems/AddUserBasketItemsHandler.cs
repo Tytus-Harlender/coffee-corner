@@ -8,7 +8,7 @@ public class AddUserBasketItemsHandler(IBasketRepository basketRepository, IProd
 {
     public async Task<IEnumerable<BasketItemDto>> Handle(AddUserBasketItemsCommand request, CancellationToken cancellationToken)
     {
-        var basket = await basketRepository.GetUserBasketAsync(request.UserPublicId);
+        var basket = await basketRepository.GetBasketAsync(request.UserPublicId);
 
         foreach (var item in request.Items)
         {
@@ -21,7 +21,7 @@ public class AddUserBasketItemsHandler(IBasketRepository basketRepository, IProd
         else
             await basketRepository.UpdateBasketAsync(basket);
 
-        await unitOfWork.SaveChangesAsync();
+        await unitOfWork.SaveChangesAsync(cancellationToken);
         return [.. basket.BasketItems.Select(bi => new BasketItemDto() { ProductPublicId = bi.Product.PublicId, Quantity = bi.Quantity, UnitPrice = bi.UnitPrice })];
     }
 }

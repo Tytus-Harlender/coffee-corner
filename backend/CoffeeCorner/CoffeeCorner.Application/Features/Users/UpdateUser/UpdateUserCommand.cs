@@ -2,7 +2,7 @@
 
 namespace CoffeeCorner.Application.Features.Users.UpdateUser;
 
-public class UpdateUserCommand : IRequest<UserDto>
+public class UpdateUserCommand : IRequest<CustomerDto>
 {
     public required Guid PublicId { get; set; }
     public string? Name { get; set; }

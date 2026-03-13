@@ -1,35 +1,31 @@
-﻿using CoffeeCorner.Application.Features.Authentication.AuthenticateUser;
-using CoffeeCorner.Application.Features.Authentication.RegisterUser;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
+﻿using CoffeeCorner.Identity.Interfaces;
+using CoffeeCorner.Identity.Interfaces.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeeCorner.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]/")]
-public class AuthenticationController(IMediator mediator) : ControllerBase
+public class AuthenticationController(IIdentityService identityService) : ControllerBase
 {
-
-    [HttpPost("login")]
-    [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> Login(AuthenticateUserCommand command)
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(RegisterRequest request)
     {
-        var token = await mediator.Send(command);
-
-        if (token == null)
-            return Unauthorized();
-
-        return Ok(new { token });
+        var result = await identityService.RegisterAsync(request, CancellationToken.None);
+        return Ok(result);
     }
 
-    [HttpPost("register")]
-    [AllowAnonymous]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IActionResult> Register(RegisterUserCommand command)
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        var id = await mediator.Send(command);
-        return Ok(new { userId = id });
+        var result = await identityService.LoginAsync(request, CancellationToken.None);
+        return Ok(result);
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh(RefreshTokenRequest request)
+    {
+        var result = await identityService.RefreshAsync(request, CancellationToken.None);
+        return Ok(result);
     }
 }

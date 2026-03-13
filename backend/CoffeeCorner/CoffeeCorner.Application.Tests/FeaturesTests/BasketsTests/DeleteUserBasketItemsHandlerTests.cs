@@ -21,10 +21,10 @@ public class DeleteUserBasketItemsHandlerTests
 
         var testingBasket = new Basket();
         List<BasketItem> basketItems = [ new(testingBasket, new Product(productPublicId, "TestProduct", 4m, 12), 8, 2m)];
-        basketRepository.GetUserBasketAsync(Arg.Any<Guid>(), Arg.Any<bool>())
+        basketRepository.GetBasketAsync(Arg.Any<Guid>(), Arg.Any<bool>())
             .Returns(new Basket() { BasketItems = basketItems});
         basketRepository.UpdateBasketAsync(Arg.Any<Basket>()).Returns(Task.CompletedTask);
-        unitOfWork.SaveChangesAsync().Returns(Task.CompletedTask);
+        unitOfWork.SaveChangesAsync(cancellationToken).Returns(Task.CompletedTask);
 
         //Act
         var result = handler.Handle(command, cancellationToken);
@@ -32,6 +32,6 @@ public class DeleteUserBasketItemsHandlerTests
         //Assert
         Assert.NotNull(result);
         basketRepository.Received(1).UpdateBasketAsync(Arg.Any<Basket>());
-        unitOfWork.Received(1).SaveChangesAsync();
+        unitOfWork.Received(1).SaveChangesAsync(cancellationToken);
     }
 }
