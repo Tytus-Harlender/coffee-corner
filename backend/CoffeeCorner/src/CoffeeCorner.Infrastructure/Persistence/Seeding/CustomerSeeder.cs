@@ -1,4 +1,4 @@
-﻿using CoffeeCorner.Domain.Entities;
+﻿using CoffeeCorner.Customers.Domain.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CoffeeCorner.Infrastructure.Persistence.Seeding;

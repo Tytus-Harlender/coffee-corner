@@ -17,12 +17,12 @@ namespace CoffeeCorner.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
+                .HasAnnotation("ProductVersion", "9.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Basket", b =>
+            modelBuilder.Entity("CoffeeCorner.Basket.Domain.Entities.Basket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -44,12 +44,13 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("CustomerId")
+                        .IsUnique();
 
-                    b.ToTable("Baskets", (string)null);
+                    b.ToTable("Baskets", "basket");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.BasketItem", b =>
+            modelBuilder.Entity("CoffeeCorner.Basket.Domain.Entities.BasketItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -84,10 +85,13 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BasketItems", (string)null);
+                    b.HasIndex("BasketId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("BasketItems", "basket");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Category", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,10 +119,10 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("ParentCategoryId");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories", "catalog");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Characteristic", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.Characteristic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -141,10 +145,10 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Characteristics", (string)null);
+                    b.ToTable("Characteristics", "catalog");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.CharacteristicValue", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.CharacteristicValue", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,10 +176,56 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("CharacteristicId");
 
-                    b.ToTable("CharacteristicValues", (string)null);
+                    b.ToTable("CharacteristicValues", "catalog");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Customer", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
+
+                    b.Property<Guid>("PublicId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublicId")
+                        .IsUnique();
+
+                    b.ToTable("Products", "catalog");
+                });
+
+            modelBuilder.Entity("CoffeeCorner.Customers.Domain.Entities.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,10 +278,10 @@ namespace CoffeeCorner.Infrastructure.Migrations
                     b.HasIndex("PublicId")
                         .IsUnique();
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", "customers");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Order", b =>
+            modelBuilder.Entity("CoffeeCorner.Orders.Domain.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -248,6 +298,9 @@ namespace CoffeeCorner.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<Guid>("OrderPublicId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("text");
@@ -262,10 +315,13 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.HasIndex("OrderPublicId")
+                        .IsUnique();
+
+                    b.ToTable("Orders", "orders");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.OrderItem", b =>
+            modelBuilder.Entity("CoffeeCorner.Orders.Domain.Entities.OrderItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -300,49 +356,10 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItems", (string)null);
-                });
+                    b.HasIndex("OrderId", "ProductId")
+                        .IsUnique();
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ImageUrl")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("PublicId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("StockQuantity")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("OrderItems", "orders");
                 });
 
             modelBuilder.Entity("ProductCategory", b =>
@@ -357,7 +374,7 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("ProductCategory", "catalog");
                 });
 
             modelBuilder.Entity("ProductCharacteristicValue", b =>
@@ -372,36 +389,21 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCharacteristicValue");
+                    b.ToTable("ProductCharacteristicValue", "catalog");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Basket", b =>
+            modelBuilder.Entity("CoffeeCorner.Basket.Domain.Entities.BasketItem", b =>
                 {
-                    b.HasOne("CoffeeCorner.Domain.Entities.Customer", null)
-                        .WithMany("Baskets")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.BasketItem", b =>
-                {
-                    b.HasOne("CoffeeCorner.Domain.Entities.Basket", null)
+                    b.HasOne("CoffeeCorner.Basket.Domain.Entities.Basket", null)
                         .WithMany("BasketItems")
                         .HasForeignKey("BasketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("CoffeeCorner.Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Category", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.Category", b =>
                 {
-                    b.HasOne("CoffeeCorner.Domain.Entities.Category", "ParentCategory")
+                    b.HasOne("CoffeeCorner.Catalog.Domain.Entities.Category", "ParentCategory")
                         .WithMany("SubCategories")
                         .HasForeignKey("ParentCategoryId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -409,50 +411,35 @@ namespace CoffeeCorner.Infrastructure.Migrations
                     b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.CharacteristicValue", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.CharacteristicValue", b =>
                 {
-                    b.HasOne("CoffeeCorner.Domain.Entities.Characteristic", "Characteristic")
+                    b.HasOne("CoffeeCorner.Catalog.Domain.Entities.Characteristic", "Characteristic")
                         .WithMany("CharacteristicValues")
                         .HasForeignKey("CharacteristicId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Characteristic");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Order", b =>
+            modelBuilder.Entity("CoffeeCorner.Orders.Domain.Entities.OrderItem", b =>
                 {
-                    b.HasOne("CoffeeCorner.Domain.Entities.Customer", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.OrderItem", b =>
-                {
-                    b.HasOne("CoffeeCorner.Domain.Entities.Order", null)
+                    b.HasOne("CoffeeCorner.Orders.Domain.Entities.Order", null)
                         .WithMany("Items")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CoffeeCorner.Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("ProductCategory", b =>
                 {
-                    b.HasOne("CoffeeCorner.Domain.Entities.Category", null)
+                    b.HasOne("CoffeeCorner.Catalog.Domain.Entities.Category", null)
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CoffeeCorner.Domain.Entities.Product", null)
+                    b.HasOne("CoffeeCorner.Catalog.Domain.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -461,42 +448,35 @@ namespace CoffeeCorner.Infrastructure.Migrations
 
             modelBuilder.Entity("ProductCharacteristicValue", b =>
                 {
-                    b.HasOne("CoffeeCorner.Domain.Entities.CharacteristicValue", null)
+                    b.HasOne("CoffeeCorner.Catalog.Domain.Entities.CharacteristicValue", null)
                         .WithMany()
                         .HasForeignKey("CharacteristicValueId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("CoffeeCorner.Domain.Entities.Product", null)
+                    b.HasOne("CoffeeCorner.Catalog.Domain.Entities.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Basket", b =>
+            modelBuilder.Entity("CoffeeCorner.Basket.Domain.Entities.Basket", b =>
                 {
                     b.Navigation("BasketItems");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Category", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.Category", b =>
                 {
                     b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Characteristic", b =>
+            modelBuilder.Entity("CoffeeCorner.Catalog.Domain.Entities.Characteristic", b =>
                 {
                     b.Navigation("CharacteristicValues");
                 });
 
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Customer", b =>
-                {
-                    b.Navigation("Baskets");
-
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("CoffeeCorner.Domain.Entities.Order", b =>
+            modelBuilder.Entity("CoffeeCorner.Orders.Domain.Entities.Order", b =>
                 {
                     b.Navigation("Items");
                 });

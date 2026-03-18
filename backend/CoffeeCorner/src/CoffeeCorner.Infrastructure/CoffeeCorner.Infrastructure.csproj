@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.14">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -17,7 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoffeeCorner.Application\CoffeeCorner.Application.csproj" />
+    <ProjectReference Include="..\Modules\CoffeeCorner.Basket\CoffeeCorner.Basket.csproj" />
+    <ProjectReference Include="..\Modules\CoffeeCorner.Catalog\CoffeeCorner.Catalog.csproj" />
+    <ProjectReference Include="..\Modules\CoffeeCorner.Customers\CoffeeCorner.Customers.csproj" />
   </ItemGroup>
 
 </Project>

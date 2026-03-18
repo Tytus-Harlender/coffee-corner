@@ -1,11 +1,12 @@
 using System.Linq.Expressions;
-using CoffeeCorner.Application.Features.Users;
+using CoffeeCorner.Application.Abstractions.Modules.Customers;
+using CoffeeCorner.Customers.Application;
 
 namespace CoffeeCorner.Infrastructure.Mapping.Customer;
 
 public static class CustomerProjections
 {
-    public static Expression<Func<Domain.Entities.Customer, CustomerDto>> ToUserDto()
+    public static Expression<Func<Customers.Domain.Entities.Customer, CustomerDto>> ToUserDto()
     {
         return user => new CustomerDto()
         {

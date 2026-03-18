@@ -15,6 +15,6 @@ public class AuthDbContext(DbContextOptions<AuthDbContext> options)
         base.OnModelCreating(builder);
 
         builder.ApplyConfigurationsFromAssembly(typeof(AuthDbContext).Assembly);
-        builder.HasDefaultSchema("identity");
+        builder.HasDefaultSchema(IdentitySchema.Schema);
     }
 }

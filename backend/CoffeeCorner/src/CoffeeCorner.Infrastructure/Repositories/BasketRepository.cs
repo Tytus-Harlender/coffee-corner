@@ -1,5 +1,5 @@
-﻿using CoffeeCorner.Application.Features.Baskets;
-using CoffeeCorner.Domain.Entities;
+﻿using CoffeeCorner.Basket;
+using CoffeeCorner.Basket.Application;
 using CoffeeCorner.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,27 +7,24 @@ namespace CoffeeCorner.Infrastructure.Repositories;
 
 public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
 {
-    public async Task AddBasketAsync(Basket basket)
+    public async Task AddBasketAsync(Basket.Domain.Entities.Basket basket)
     {
         await context.Baskets.AddAsync(basket);
     }
 
-    public Task UpdateBasketAsync(Basket basket)
+    public Task UpdateBasketAsync(Basket.Domain.Entities.Basket basket)
     {
         context.Baskets.Update(basket);
         return Task.CompletedTask;
     }
 
-    public async Task<Basket> GetBasketAsync(Guid customerPublicId, bool asNoTracking)
+    public async Task<Basket.Domain.Entities.Basket> GetBasketAsync(int customerId, bool asNoTracking)
     {
-        var customer = await context.Customers
-            .FirstOrDefaultAsync(u => u.PublicId == customerPublicId);
+        if (customerId == 0)
+            throw new Exception($"Customer internal Id cannot be set to 0");
 
-        if (customer is null)
-            throw new Exception($"{nameof(customer)} is null");
-
-        IQueryable<Basket> query = context.Baskets
-            .Where(b => b.CustomerId == customer.Id && !b.IsDeleted)
+        IQueryable<Basket.Domain.Entities.Basket> query = context.Baskets
+            .Where(b => b.CustomerId == customerId && !b.IsDeleted)
             .Include(b => b.BasketItems.Where(bi => bi.Quantity > 0));
 
         if (asNoTracking)
@@ -38,9 +35,9 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
         if (existingBasket is not null)
             return existingBasket;
 
-        var newBasket = new Basket()
+        var newBasket = new Basket.Domain.Entities.Basket()
         {
-            CustomerId = customer.Id
+            CustomerId = customerId
         };
 
         await context.Baskets.AddAsync(newBasket);
@@ -48,7 +45,7 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
         return newBasket;
     }
 
-    public async Task DeleteBasketItemAsync(Basket basket, Guid productPublicId)
+    public async Task DeleteBasketItemAsync(Basket.Domain.Entities.Basket basket, Guid productPublicId)
     {
         var product = context.Products.FirstOrDefault(p => p.PublicId == productPublicId);
         
@@ -60,7 +57,7 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
             .ForEachAsync(bi => bi.IsDeleted = true);
     }
 
-    public void DeleteBasket(Basket basket)
+    public void DeleteBasket(Basket.Domain.Entities.Basket basket)
     {
         basket.IsDeleted = true;
 

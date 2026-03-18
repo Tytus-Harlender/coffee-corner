@@ -1,16 +1,36 @@
-﻿using CoffeeCorner.Application.Features.Users;
-using CoffeeCorner.Application.Features.Users.CreateUser;
-using CoffeeCorner.Application.Features.Users.DeleteUser;
-using CoffeeCorner.Application.Features.Users.UpdateUser;
-using CoffeeCorner.Domain.Entities;
+﻿using CoffeeCorner.Application.Abstractions.Modules.Customers;
+using CoffeeCorner.Customers;
+using CoffeeCorner.Customers.Application.Commands.CreateCustomer;
+using CoffeeCorner.Customers.Application.Commands.DeleteCustomer;
+using CoffeeCorner.Customers.Application.Commands.UpdateCustomer;
+using CoffeeCorner.Customers.Domain.Entities;
 using CoffeeCorner.Infrastructure.Mapping.Customer;
 using CoffeeCorner.Infrastructure.Persistence;
+using CoffeeCorner.Orders;
+using CoffeeCorner.Orders.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Infrastructure.Repositories;
 
 public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerRepository
 {
+    public async Task<bool> ExistsAsync(Guid customerPublicId)
+    {
+        var customers = await context.Customers
+            .AnyAsync(c => c.PublicId == customerPublicId);
+        return customers;
+    }
+
+    public async Task<int> GetCustomerDbIdAsync(Guid customerPublicId)
+    {
+        var customerInternalId = await context.Customers
+            .AsNoTracking()
+            .Select(i => i.Id)
+            .FirstOrDefaultAsync();
+        
+        return customerInternalId;
+    }
+
     public async Task<IEnumerable<CustomerDto>> GetAllCustomersAsync()
     {
         var users = await context.Customers
@@ -46,7 +66,7 @@ public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerReposi
         return newCustomer.PublicId;
     }
 
-    public async Task<CustomerDto> UpdateCustomerAsync(UpdateUserCommand command)
+    public async Task<CustomerDto> UpdateCustomerAsync(UpdateCustomerCommand command)
     {
         var user = await context.Customers
             .FirstOrDefaultAsync(u => u.PublicId == command.PublicId);
@@ -80,7 +100,7 @@ public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerReposi
         }
     }
 
-    public async Task DeleteCustomerAsync(DeleteUserCommand command)
+    public async Task DeleteCustomerAsync(DeleteCustomerCommand command)
     {
         var user = await context.Customers
             .FirstOrDefaultAsync(u => u.PublicId == command.PublicId) ?? throw new Exception("User not found for the provided publicId value");
@@ -88,6 +108,11 @@ public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerReposi
         user.IsDeleted = true;
 
         await context.SaveChangesAsync();
+    }
+
+    Task<IEnumerable<OrderDto>> ICustomerRepository.GetAllUserOrdersAsync(Guid publicId)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<IEnumerable<Order>> GetAllUserOrdersAsync(Guid userPublicId)

@@ -1,6 +1,7 @@
-using CoffeeCorner.Application.Features.Products;
-using CoffeeCorner.Application.Features.Products.GetAllProducts;
-using CoffeeCorner.Application.Features.Products.GetProduct;
+using CoffeeCorner.Application.Abstractions.Modules.Catalog;
+using CoffeeCorner.Catalog.Application;
+using CoffeeCorner.Catalog.Application.Queries.GetAllProducts;
+using CoffeeCorner.Catalog.Application.Queries.GetProduct;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

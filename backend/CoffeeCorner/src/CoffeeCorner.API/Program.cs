@@ -1,16 +1,21 @@
 using System.Text;
-using CoffeeCorner.Application.Features.Baskets;
-using CoffeeCorner.Application.Features.Orders;
-using CoffeeCorner.Application.Features.Products;
-using CoffeeCorner.Application.Features.Products.GetAllProducts;
-using CoffeeCorner.Application.Features.Users;
-using CoffeeCorner.Application.Interfaces;
-using CoffeeCorner.Domain.Factories;
+using CoffeeCorner.Application.Abstractions.Modules.Basket;
+using CoffeeCorner.Application.Abstractions.Modules.Catalog;
+using CoffeeCorner.Application.Abstractions.Modules.Customers;
+using CoffeeCorner.Basket;
+using CoffeeCorner.Basket.Application.ModuleApi;
+using CoffeeCorner.Catalog.Application;
+using CoffeeCorner.Catalog.Application.ModuleApi;
+using CoffeeCorner.Catalog.Application.Queries.GetAllProducts;
+using CoffeeCorner.Customers;
+using CoffeeCorner.Customers.Application;
 using CoffeeCorner.Identity.Configuration;
 using CoffeeCorner.Identity.Persistence;
 using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
+using CoffeeCorner.Orders;
+using CoffeeCorner.Orders.Domain.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -61,11 +66,13 @@ builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 });
 
 builder.Services.AddScoped<IOrderFactory, OrderFactory>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICatalogRepository, CatalogRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICatalogModule, CatalogModule>();
+builder.Services.AddScoped<IBasketModule, BasketModule>();
+builder.Services.AddScoped<ICustomersModule, CustomersModule>();
 
 builder.Services.AddCors(options =>
 {

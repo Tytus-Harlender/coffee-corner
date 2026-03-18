@@ -1,5 +1,5 @@
-﻿using CoffeeCorner.Application.Features.Orders;
-using CoffeeCorner.Application.Features.Orders.CreateOrderFromBasket;
+﻿using CoffeeCorner.Orders;
+using CoffeeCorner.Orders.Application.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

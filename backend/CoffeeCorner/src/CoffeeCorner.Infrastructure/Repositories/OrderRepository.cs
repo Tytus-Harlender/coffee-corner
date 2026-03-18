@@ -1,6 +1,6 @@
-﻿using CoffeeCorner.Application.Features.Orders;
-using CoffeeCorner.Domain.Entities;
-using CoffeeCorner.Infrastructure.Persistence;
+﻿using CoffeeCorner.Infrastructure.Persistence;
+using CoffeeCorner.Orders;
+using CoffeeCorner.Orders.Domain.Entities;
 
 namespace CoffeeCorner.Infrastructure.Repositories;
 

@@ -1,4 +1,6 @@
-﻿using CoffeeCorner.Domain.Entities;
+﻿
+
+using CoffeeCorner.Catalog.Domain.Entities;
 
 namespace CoffeeCorner.Infrastructure.Persistence.Seeding;
 

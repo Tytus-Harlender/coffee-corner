@@ -1,11 +1,12 @@
-﻿using CoffeeCorner.Application.Features.Orders;
-using CoffeeCorner.Application.Features.Users;
-using CoffeeCorner.Application.Features.Users.CreateUser;
-using CoffeeCorner.Application.Features.Users.DeleteUser;
-using CoffeeCorner.Application.Features.Users.GetAllUserOrders;
-using CoffeeCorner.Application.Features.Users.GetAllUsers;
-using CoffeeCorner.Application.Features.Users.GetUser;
-using CoffeeCorner.Application.Features.Users.UpdateUser;
+﻿using CoffeeCorner.Application.Abstractions.Modules.Customers;
+using CoffeeCorner.Customers.Application;
+using CoffeeCorner.Customers.Application.Commands.CreateCustomer;
+using CoffeeCorner.Customers.Application.Commands.DeleteCustomer;
+using CoffeeCorner.Customers.Application.Commands.UpdateCustomer;
+using CoffeeCorner.Customers.Application.Queries.GetAllCustomerOrders;
+using CoffeeCorner.Customers.Application.Queries.GetAllCustomers;
+using CoffeeCorner.Customers.Application.Queries.GetCustomer;
+using CoffeeCorner.Orders;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [Authorize(Roles ="Admin")]
-    public async Task<ActionResult<IEnumerable<CustomerDto>>> GetAllUsers(GetAllUsersQuery query)
+    public async Task<ActionResult<IEnumerable<CustomerDto>>> GetAllUsers(GetAllCustomersQuery query)
     {
         var result = await mediator.Send(query);
         return Ok(result);
@@ -28,7 +29,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     [Authorize]
     public async Task<ActionResult<CustomerDto>> GetUserAsync([FromRoute] Guid publicId)
     {
-        var query = new GetUserQuery(publicId);
+        var query = new GetCustomerQuery(publicId);
         var result = await mediator.Send(query);
         return result is null ? NotFound("User not found") : Ok(result);
     }
@@ -37,7 +38,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     [Authorize]
     public async Task<ActionResult<IEnumerable<OrderDto>>> GetAllUserOrdersAsync([FromRoute] Guid publicId)
     {
-        var query = new GetAllUserOrdersQuery(publicId);
+        var query = new GetAllCustomerOrdersQuery(publicId);
         var result = await mediator.Send(query);
         return result is null ? NotFound("Orders not found for the user") : Ok(result);
     }
@@ -52,7 +53,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPut("{publicId:guid}")]
     [Authorize]
-    public async Task<ActionResult> UpdateUserAsync(UpdateUserCommand command, [FromRoute] Guid publicId)
+    public async Task<ActionResult> UpdateUserAsync(UpdateCustomerCommand command, [FromRoute] Guid publicId)
     {
         command.PublicId  = publicId;
         var result = await mediator.Send(command);
@@ -63,7 +64,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     [Authorize]
     public async Task<ActionResult> DeleteUserAsync([FromRoute] Guid publicId)
     {
-        var command = new DeleteUserCommand(publicId);
+        var command = new DeleteCustomerCommand(publicId);
         var result = await mediator.Send(command);
         return result is null ? BadRequest() : NoContent();
     }
