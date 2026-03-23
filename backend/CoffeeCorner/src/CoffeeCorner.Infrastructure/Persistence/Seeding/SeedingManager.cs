@@ -18,6 +18,7 @@ public static class SeedingManager
         }
         if (!context.Customers.Any())
         {
+            await IdentitySeeder.SeedAsync(services);
             await CustomerSeeder.SeedAsync(services);
         }
     }

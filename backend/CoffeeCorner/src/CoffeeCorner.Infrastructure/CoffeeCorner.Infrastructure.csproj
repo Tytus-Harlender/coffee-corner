@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoffeeCorner.Identity\CoffeeCorner.Identity.csproj" />
     <ProjectReference Include="..\Modules\CoffeeCorner.Basket\CoffeeCorner.Basket.csproj" />
     <ProjectReference Include="..\Modules\CoffeeCorner.Catalog\CoffeeCorner.Catalog.csproj" />
     <ProjectReference Include="..\Modules\CoffeeCorner.Customers\CoffeeCorner.Customers.csproj" />

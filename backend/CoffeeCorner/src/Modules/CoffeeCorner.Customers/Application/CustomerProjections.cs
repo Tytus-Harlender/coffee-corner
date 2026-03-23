@@ -1,8 +1,7 @@
 using System.Linq.Expressions;
 using CoffeeCorner.Application.Abstractions.Modules.Customers;
-using CoffeeCorner.Customers.Application;
 
-namespace CoffeeCorner.Infrastructure.Mapping.Customer;
+namespace CoffeeCorner.Customers.Application;
 
 public static class CustomerProjections
 {

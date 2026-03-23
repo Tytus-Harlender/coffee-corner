@@ -1,12 +1,11 @@
 ﻿using CoffeeCorner.Application.Abstractions.Modules.Customers;
 using CoffeeCorner.Customers;
+using CoffeeCorner.Customers.Application;
 using CoffeeCorner.Customers.Application.Commands.CreateCustomer;
 using CoffeeCorner.Customers.Application.Commands.DeleteCustomer;
 using CoffeeCorner.Customers.Application.Commands.UpdateCustomer;
 using CoffeeCorner.Customers.Domain.Entities;
-using CoffeeCorner.Infrastructure.Mapping.Customer;
 using CoffeeCorner.Infrastructure.Persistence;
-using CoffeeCorner.Orders;
 using CoffeeCorner.Orders.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -108,27 +107,5 @@ public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerReposi
         user.IsDeleted = true;
 
         await context.SaveChangesAsync();
-    }
-
-    Task<IEnumerable<OrderDto>> ICustomerRepository.GetAllUserOrdersAsync(Guid publicId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<IEnumerable<Order>> GetAllUserOrdersAsync(Guid userPublicId)
-    {
-        var user = await context.Customers
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.PublicId == userPublicId) ?? throw new Exception("User not found for the provided publicId value");
-        
-        var userOrders = await context.Orders
-            .AsNoTracking()
-            .Where(o => o.CustomerId == user.Id)
-            .ToListAsync();
-
-        if (userOrders.Count == 0)
-            throw new Exception("No orders found for the user");
-
-        return userOrders;
     }
 }

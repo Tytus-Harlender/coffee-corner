@@ -5,67 +5,40 @@ namespace CoffeeCorner.Infrastructure.Persistence.Seeding;
 
 public static class CustomerSeeder
 {
-    // This Seeder needs refactoring after Identity+Customer registration is set up
     public static async Task SeedAsync(IServiceProvider services)
     {
         using var scope = services.CreateScope();
-        var context = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
+        var customerContext = scope.ServiceProvider.GetRequiredService<CoffeeCornerDbContext>();
 
-        if (!context.Customers.Any())
+        if (!customerContext.Customers.Any())
         {
-            var customers = GetInitialUsers();
-
-            //await context.Database.ExecuteSqlRawAsync("ALTER SEQUENCE \"Users_Id_seq\" RESTART WITH 1;");
-
+            var customers = GetInitialCustomers();
             
-            await context.Customers.AddRangeAsync(customers);
-            await context.SaveChangesAsync();
+            await customerContext.Customers.AddRangeAsync(customers);
+            await customerContext.SaveChangesAsync();
         }
     }
 
-    private static List<Customer> GetInitialUsers()
+    private static List<Customer> GetInitialCustomers()
     {
-        List<Customer> customers = [
-            new ("Alice", "Johnson", "alice.johnson@example.com", "123 Maple St", null, "New York", "USA", "+1-555-123-4567")
+        return new List<Customer>
+        {
+            new("Alice", "Johnson", "alice.johnson@example.com", "123 Maple St", null, "New York", "USA", "+1-555-123-4567")
             {
-                PublicId = Guid.NewGuid()
-            }];
-            // new()
-            // {
-            //     PublicId = Guid.NewGuid(),
-            //     Name = "Bob",
-            //     Surname = "Smith",
-            //     Email = "bob.smith@example.com",
-            //     UserName = "bob.smith@example.com",
-            //     PhoneNumber = "+1-555-987-6543",
-            //     AddressLine1 = "456 Oak Avenue",
-            //     City = "Los Angeles",
-            //     Country = "USA"
-            // }, password: "Cheerup2"),
-            // (new()
-            // {
-            //     PublicId = Guid.NewGuid(),
-            //     Name = "Charlie",
-            //     Surname = "Kowalski",
-            //     Email = "charlie.kowalski@example.com",
-            //     UserName = "charlie.kowalski@example.com",
-            //     PhoneNumber = "+48-600-700-800",
-            //     AddressLine1 = "12 Długa Street",
-            //     City = "Warsaw",
-            //     Country = "Poland"
-            // }, password: "we34!@P"),
-            // (new()
-            // {
-            //     PublicId = Guid.NewGuid(),
-            //     Name = "Diana",
-            //     Surname = "Lee",
-            //     Email = "diana.lee@example.com",
-            //     UserName = "diana.lee@example.com",
-            //     AddressLine1 = "22 Queen’s Road",
-            //     City = "London",
-            //     Country = "UK"
-            // }, password: "NoNeedForThat3")];
-
-        return customers;
+                PublicId = Guid.Parse("11111111-1111-1111-1111-111111111111")
+            },
+            new("Bob", "Smith", "bob.smith@example.com", "456 Oak Avenue", null, "Los Angeles", "USA", "+1-555-987-6543")
+            {
+                PublicId = Guid.Parse("22222222-2222-2222-2222-222222222222")
+            },
+            new("Charlie", "Kowalski", "charlie.kowalski@example.com", "12 Długa Street", null, "Warsaw", "Poland", "+48-600-700-800")
+            {
+                PublicId = Guid.Parse("33333333-3333-3333-3333-333333333333")
+            },
+            new("Diana", "Lee", "diana.lee@example.com", "22 Queen’s Road", null, "London", "UK", null)
+            {
+                PublicId = Guid.Parse("44444444-4444-4444-4444-444444444444")
+            }
+        };
     }
 }

@@ -146,6 +146,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGet("/", () => "Welcome to Coffee Corner!");
-
 app.Run();
