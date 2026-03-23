@@ -1,6 +1,0 @@
-@CoffeeCorner_HostAddress = https://localhost:44347
-
-GET {{CoffeeCorner_HostAddress}}/minimal-get-types/
-Accept: application/json
-
-###

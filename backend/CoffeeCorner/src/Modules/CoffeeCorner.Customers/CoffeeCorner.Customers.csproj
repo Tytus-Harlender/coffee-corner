@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\BuildingBlocks\CoffeeCorner.Application.Abstractions\CoffeeCorner.Application.Abstractions.csproj" />
+      <ProjectReference Include="..\..\BuildingBlocks\CoffeeCorner.SharedKernel\CoffeeCorner.SharedKernel.csproj" />
+      <ProjectReference Include="..\CoffeeCorner.Basket\CoffeeCorner.Basket.csproj" />
+      <ProjectReference Include="..\CoffeeCorner.Orders\CoffeeCorner.Orders.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="MediatR">
+        <HintPath>..\..\..\..\..\..\..\..\.nuget\packages\mediatr\12.5.0\lib\net6.0\MediatR.dll</HintPath>
+      </Reference>
+      <Reference Include="MediatR.Contracts">
+        <HintPath>..\..\..\..\..\..\..\..\.nuget\packages\mediatr.contracts\2.0.1\lib\netstandard2.0\MediatR.Contracts.dll</HintPath>
+      </Reference>
+      <Reference Include="Microsoft.EntityFrameworkCore">
+        <HintPath>..\..\..\..\..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\9.0.10\lib\net8.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
