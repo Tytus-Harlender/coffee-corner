@@ -6,21 +6,22 @@ namespace CoffeeCorner.Customers.Domain.Entities;
 
 public sealed class Customer : BaseEntity
 {
-    public required Guid PublicId { get; init; } = Guid.NewGuid();
-    public string Name { get; set; } = string.Empty;
-    public string Surname { get; set; } = string.Empty;
-    public string? AddressLine1 { get; set; }
-    public string? AddressLine2 { get; set; }
-    public string? City { get; set; }
-    public string? Country { get; set; }
-    public string? PhoneNumber { get; set; }
-    public string? Email { get; set; }
+    public Guid PublicId { get; private set; } = Guid.NewGuid();
+    public string Name { get; private set; } = string.Empty;
+    public string Surname { get; private set; } = string.Empty;
+    public string? AddressLine1 { get; private set; }
+    public string? AddressLine2 { get; private set; }
+    public string? City { get; private set; }
+    public string? Country { get; private set; }
+    public string? PhoneNumber { get; private set; }
+    public string? Email { get; private set; }
 
     private Customer()
     {
     }
 
     public Customer(
+        Guid publicId,
         string name,
         string surname,
         string email,
@@ -35,14 +36,18 @@ public sealed class Customer : BaseEntity
 
         if (string.IsNullOrWhiteSpace(surname))
             throw new CustomerCreationException("Customers surname must be positive");
+        
+        if (string.IsNullOrWhiteSpace(email))
+            throw new CustomerCreationException("Email is required");
 
+        PublicId = publicId;
         Name = name;
         Surname = surname;
+        Email = email;
         AddressLine1 = addressLine1;
         AddressLine2 = addressLine2;
         City = city;
         Country = country;
         PhoneNumber = phoneNumber;
-        Email = email;
     }
 }

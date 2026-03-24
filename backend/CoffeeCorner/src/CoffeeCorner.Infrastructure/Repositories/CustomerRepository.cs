@@ -1,12 +1,10 @@
 ﻿using CoffeeCorner.Application.Abstractions.Modules.Customers;
 using CoffeeCorner.Customers;
 using CoffeeCorner.Customers.Application;
-using CoffeeCorner.Customers.Application.Commands.CreateCustomer;
 using CoffeeCorner.Customers.Application.Commands.DeleteCustomer;
 using CoffeeCorner.Customers.Application.Commands.UpdateCustomer;
 using CoffeeCorner.Customers.Domain.Entities;
 using CoffeeCorner.Infrastructure.Persistence;
-using CoffeeCorner.Orders.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Infrastructure.Repositories;
@@ -49,20 +47,15 @@ public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerReposi
         return user ?? throw new Exception("User not found for the provided publicId value");
     }
 
-    public async Task<Guid> CreateCustomerAsync(CreateCustomerCommand command)
+    public async Task<Guid> CreateCustomerAsync(Customer customer, CancellationToken ct = default)
     {
-        if (command is null)
-            throw new Exception(message: "Input parameters for user creation are null");
+        if (customer is null)
+            throw new Exception(message: "Customer entity is null");
 
-        var newCustomer = new Customer(command.Name, command.Surname, command.Email)
-        {
-            PublicId = Guid.NewGuid()
-        };
+        await context.Customers.AddAsync(customer, ct);
+        await context.SaveChangesAsync(ct);
 
-        await context.Customers.AddAsync(newCustomer);
-        await context.SaveChangesAsync();
-
-        return newCustomer.PublicId;
+        return customer.PublicId;
     }
 
     public async Task<CustomerDto> UpdateCustomerAsync(UpdateCustomerCommand command)
@@ -72,15 +65,15 @@ public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerReposi
 
         if (user is not null)
         {
-            user.Name = string.IsNullOrWhiteSpace(command.Name) ? user.Name : command.Name;
-            user.Surname = string.IsNullOrWhiteSpace(command.Surname) ? user.Surname : command.Surname;
-            user.Email = string.IsNullOrWhiteSpace(command.Email) ? user.Email : command.Email;
-            user.PhoneNumber = command.PhoneNumber ?? user.PhoneNumber;
-            user.AddressLine1 = command.AddressLine1 ?? user.AddressLine1;
-            user.AddressLine2 = command.AddressLine2 ?? user.AddressLine2;
-            user.City = command.City ?? user.City;
-            user.Country = command.Country ?? user.Country;
-            user.UpdatedAt = DateTime.UtcNow;
+            //user.Name = string.IsNullOrWhiteSpace(command.Name) ? user.Name : command.Name;
+            //user.Surname = string.IsNullOrWhiteSpace(command.Surname) ? user.Surname : command.Surname;
+            //user.Email = string.IsNullOrWhiteSpace(command.Email) ? user.Email : command.Email;
+            //user.PhoneNumber = command.PhoneNumber ?? user.PhoneNumber;
+            //user.AddressLine1 = command.AddressLine1 ?? user.AddressLine1;
+            //user.AddressLine2 = command.AddressLine2 ?? user.AddressLine2;
+            //user.City = command.City ?? user.City;
+            //user.Country = command.Country ?? user.Country;
+            //user.UpdatedAt = DateTime.UtcNow;
 
             await context.SaveChangesAsync();
 

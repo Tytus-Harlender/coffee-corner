@@ -2,6 +2,7 @@ using System.Text;
 using CoffeeCorner.Application.Abstractions.Modules.Basket;
 using CoffeeCorner.Application.Abstractions.Modules.Catalog;
 using CoffeeCorner.Application.Abstractions.Modules.Customers;
+using CoffeeCorner.Application.Accounts;
 using CoffeeCorner.Basket;
 using CoffeeCorner.Basket.Application.ModuleApi;
 using CoffeeCorner.Catalog.Application;
@@ -53,6 +54,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddMediatR(cfg => 
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllProductsQuery).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
 });
 builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>
 {
@@ -73,6 +75,7 @@ builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICatalogModule, CatalogModule>();
 builder.Services.AddScoped<IBasketModule, BasketModule>();
 builder.Services.AddScoped<ICustomersModule, CustomersModule>();
+builder.Services.AddScoped<ICustomerReadDbContext, CoffeeCornerDbContext>();
 
 builder.Services.AddCors(options =>
 {

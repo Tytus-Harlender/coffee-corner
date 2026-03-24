@@ -3,6 +3,7 @@ using CoffeeCorner.Basket.Domain.Entities;
 using CoffeeCorner.Basket.Infrastructure.EntitiesConfigurations;
 using CoffeeCorner.Catalog.Domain.Entities;
 using CoffeeCorner.Catalog.Infrastructure.EntitiesConfigurations;
+using CoffeeCorner.Customers;
 using CoffeeCorner.Customers.Domain.Entities;
 using CoffeeCorner.Customers.Infrastructure.EntitiesConfigurations;
 using CoffeeCorner.Orders.Domain.Entities;
@@ -11,7 +12,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeCorner.Infrastructure.Persistence;
 
-public class CoffeeCornerDbContext(DbContextOptions options) : DbContext(options)
+public class CoffeeCornerDbContext(DbContextOptions options)
+    : DbContext(options),
+        ICustomerReadDbContext
 {
     public DbSet<Customer> Customers  { get; set; }
     public DbSet<Product> Products { get; set; }

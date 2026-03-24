@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeCorner.Customers.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeCorner.Orders.Tests", "tests\ModulesTests\CoffeeCorner.Orders.Tests\CoffeeCorner.Orders.Tests.csproj", "{35B74A14-20A1-46BD-8E85-02C7E95B7C5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeCorner.Application", "src\CoffeeCorner.Application\CoffeeCorner.Application.csproj", "{B6C66390-1769-4C74-A6B3-0D007649A6A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,6 +119,10 @@ Global
 		{35B74A14-20A1-46BD-8E85-02C7E95B7C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35B74A14-20A1-46BD-8E85-02C7E95B7C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35B74A14-20A1-46BD-8E85-02C7E95B7C5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6C66390-1769-4C74-A6B3-0D007649A6A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6C66390-1769-4C74-A6B3-0D007649A6A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6C66390-1769-4C74-A6B3-0D007649A6A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6C66390-1769-4C74-A6B3-0D007649A6A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,6 +150,7 @@ Global
 		{A48E9DEF-35C5-4CA9-B2D6-54114E5AE935} = {F9F0EA18-579F-4139-88CD-483601E44510}
 		{CD421A14-FAD9-417D-8309-2999FD14215D} = {F9F0EA18-579F-4139-88CD-483601E44510}
 		{35B74A14-20A1-46BD-8E85-02C7E95B7C5E} = {F9F0EA18-579F-4139-88CD-483601E44510}
+		{B6C66390-1769-4C74-A6B3-0D007649A6A0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {24597235-EF29-4909-97E9-74E267D440EA}

@@ -15,16 +15,16 @@ public class IdentityService(
     IRefreshTokenStore refreshStore,
     IOptions<IdentityOptions> options) : IIdentityService
 {
-    public async Task<TokenResult> RegisterAsync(RegisterRequest request, CancellationToken ct)
+    public async Task<TokenResult> RegisterAsync(string email, string password, CancellationToken ct)
     {
         var user = new User
         {
             PublicId = Guid.NewGuid(),
-            UserName = request.Email,
-            Email = request.Email
+            UserName = email,
+            Email = email
         };
 
-        var result = await userManager.CreateAsync(user, request.Password);
+        var result = await userManager.CreateAsync(user, password);
 
         if (!result.Succeeded)
             throw new Exception("Registration failed.");

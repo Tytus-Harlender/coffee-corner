@@ -2,6 +2,6 @@ namespace CoffeeCorner.Application.Abstractions.Modules.Customers;
 
 public interface ICustomersModule
 {
-    Task<bool> ExistsAsync(Guid customerPublicId);
+    Task EnsureCustomerExistsAsync(CustomerDto customerPublicId, CancellationToken cancellationToken = default);
     Task<int> GetCustomerDbIdAsync(Guid customerPublicId);
 }

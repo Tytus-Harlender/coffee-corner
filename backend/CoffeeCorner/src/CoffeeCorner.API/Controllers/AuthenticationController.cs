@@ -1,17 +1,26 @@
-﻿using CoffeeCorner.Identity.Interfaces;
+﻿using CoffeeCorner.Application.Accounts;
+using CoffeeCorner.Identity.Interfaces;
 using CoffeeCorner.Identity.Interfaces.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CoffeeCorner.API.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]/")]
-public class AuthenticationController(IIdentityService identityService) : ControllerBase
+public class AuthenticationController(IIdentityService identityService, IMediator mediator) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequest request)
+    public async Task<ActionResult<TokenResult>> Register(RegisterRequest request)
     {
-        var result = await identityService.RegisterAsync(request, CancellationToken.None);
+        var registerUserCommand = new RegisterUserCommand()
+        {
+            Name = request.Name,
+            Surname = request.Surname,
+            Email = request.Email,
+            Password = request.Password
+        };
+        var result = await mediator.Send(registerUserCommand, CancellationToken.None);
         return Ok(result);
     }
 
