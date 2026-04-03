@@ -22,6 +22,7 @@ public class CustomerRepository(CoffeeCornerDbContext context) : ICustomerReposi
     {
         var customerInternalId = await context.Customers
             .AsNoTracking()
+            .Where(i => i.PublicId == customerPublicId)
             .Select(i => i.Id)
             .FirstOrDefaultAsync();
         

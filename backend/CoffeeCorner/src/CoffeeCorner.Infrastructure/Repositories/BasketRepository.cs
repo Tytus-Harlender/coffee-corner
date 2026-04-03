@@ -10,12 +10,13 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
     public async Task AddBasketAsync(Basket.Domain.Entities.Basket basket)
     {
         await context.Baskets.AddAsync(basket);
+        await context.SaveChangesAsync();
     }
 
-    public Task UpdateBasketAsync(Basket.Domain.Entities.Basket basket)
+    public async Task UpdateBasketAsync(Basket.Domain.Entities.Basket basket)
     {
         context.Baskets.Update(basket);
-        return Task.CompletedTask;
+        await context.SaveChangesAsync();
     }
 
     public async Task<Basket.Domain.Entities.Basket> GetBasketAsync(int customerId, bool asNoTracking)
@@ -30,10 +31,10 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
         if (asNoTracking)
             query = query.AsNoTracking();
             
-        var existingBasket = await query.FirstOrDefaultAsync();
+        var existingBasket = await query.ToListAsync();
 
-        if (existingBasket is not null)
-            return existingBasket;
+        if (existingBasket.FirstOrDefault() is not null)
+            return existingBasket.FirstOrDefault() ?? new Basket.Domain.Entities.Basket();
 
         var newBasket = new Basket.Domain.Entities.Basket()
         {
@@ -55,12 +56,15 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
         await context.BasketItems
             .Where(bi => bi.BasketId == basket.Id && bi.ProductId == product.Id)
             .ForEachAsync(bi => bi.IsDeleted = true);
+
+        await context.SaveChangesAsync();
     }
 
-    public void DeleteBasket(Basket.Domain.Entities.Basket basket)
+    public async Task DeleteBasket(Basket.Domain.Entities.Basket basket)
     {
         basket.IsDeleted = true;
 
         context.Baskets.Update(basket);
+        await context.SaveChangesAsync();
     }
 }

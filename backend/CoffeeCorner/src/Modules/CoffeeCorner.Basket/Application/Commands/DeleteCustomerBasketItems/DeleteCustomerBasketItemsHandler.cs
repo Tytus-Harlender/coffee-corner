@@ -16,9 +16,9 @@ public class DeleteCustomerBasketItemsHandler(IBasketRepository basketRepository
         
         var basket = await basketRepository.GetBasketAsync(customerDbId);
 
-        var product = catalogModule.GetProductAsync(request.ProductPublicId);
+        var productsIds = await catalogModule.GetProductDbIdsAsync([request.ProductPublicId]);
         
-        basket.DeleteItem(product.Id);
+        basket.DeleteItem(productsIds[request.ProductPublicId]);
 
         await basketRepository.UpdateBasketAsync(basket);
 

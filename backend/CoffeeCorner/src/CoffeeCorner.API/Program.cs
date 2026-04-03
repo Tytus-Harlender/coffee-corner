@@ -5,6 +5,7 @@ using CoffeeCorner.Application.Abstractions.Modules.Customers;
 using CoffeeCorner.Application.Accounts;
 using CoffeeCorner.Basket;
 using CoffeeCorner.Basket.Application.ModuleApi;
+using CoffeeCorner.Basket.Application.Queries.GetCustomerBasket;
 using CoffeeCorner.Catalog.Application;
 using CoffeeCorner.Catalog.Application.ModuleApi;
 using CoffeeCorner.Catalog.Application.Queries.GetAllProducts;
@@ -16,6 +17,7 @@ using CoffeeCorner.Infrastructure.Persistence;
 using CoffeeCorner.Infrastructure.Persistence.Seeding;
 using CoffeeCorner.Infrastructure.Repositories;
 using CoffeeCorner.Orders;
+using CoffeeCorner.Orders.Application.Queries.GetAllCustomerOrders;
 using CoffeeCorner.Orders.Domain.Factories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +56,8 @@ builder.Services.AddAuthorization();
 builder.Services.AddMediatR(cfg => 
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllProductsQuery).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetCustomerBasketQuery).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(GetAllCustomerOrdersQuery).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
 });
 builder.Services.AddDbContext<CoffeeCornerDbContext>(options =>

@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using CoffeeCorner.Identity.Helpers;
 using CoffeeCorner.Identity.Interfaces;
 using CoffeeCorner.Identity.Interfaces.Models;
@@ -47,8 +48,9 @@ public class IdentityService(
     {
         var principal = JwtHelper.GetPrincipalFromExpiredToken(request.AccessToken, options.Value);
 
-        var userId = principal.FindFirst("sub")!.Value;
-
+        var userId = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                     ?? throw new Exception("User ID claim not found");
+        
         var valid = await refreshStore.ValidateAsync(userId, request.RefreshToken, ct);
         if (!valid)
             throw new Exception("Invalid refresh token.");

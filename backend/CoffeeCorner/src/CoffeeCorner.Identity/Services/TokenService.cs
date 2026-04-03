@@ -30,9 +30,9 @@ public sealed class TokenService(
 
         var claims = new List<Claim>
         {
-            new("sub", userId.ToString()),
-            new("email", email),
-            new("publicId", publicUserId.ToString())
+            new (ClaimTypes.NameIdentifier, userId.ToString()),
+            new (JwtRegisteredClaimNames.Email, email),
+            new ("publicId", publicUserId.ToString())
         };
 
         claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
