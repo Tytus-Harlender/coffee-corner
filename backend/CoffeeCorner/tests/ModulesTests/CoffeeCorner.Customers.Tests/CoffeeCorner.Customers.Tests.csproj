@@ -6,4 +6,20 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="xunit.core">
+        <HintPath>..\..\..\..\..\..\..\..\.nuget\packages\xunit.extensibility.core\2.9.3\lib\netstandard1.1\xunit.core.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\src\Modules\CoffeeCorner.Customers\CoffeeCorner.Customers.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FluentAssertions" Version="8.9.0" />
+      <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.4.0" />
+      <PackageReference Include="xunit" Version="2.9.3" />
+    </ItemGroup>
+
 </Project>

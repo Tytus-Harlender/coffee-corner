@@ -1,4 +1,3 @@
-
 using CoffeeCorner.Catalog.Domain.Entities;
 using CoffeeCorner.Catalog.Domain.Exceptions;
 using FluentAssertions;

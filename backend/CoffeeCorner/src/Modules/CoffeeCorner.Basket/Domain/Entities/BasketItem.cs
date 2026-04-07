@@ -23,7 +23,7 @@ public sealed class BasketItem : BaseEntity
     public void Increase(int qty) => Quantity += qty;
     public void Decrease(int quantity)
     {
-        if (Quantity <= 1) throw new Exception("Unable to decrease items quantity. Quantity must be greater than 0.");
+        if (Quantity <= quantity) throw new Exception("Unable to decrease items quantity. Quantity must be greater than 0.");
         Quantity -= quantity;
     }
 }
