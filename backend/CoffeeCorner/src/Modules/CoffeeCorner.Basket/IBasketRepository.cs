@@ -7,4 +7,5 @@ public interface IBasketRepository
     public Task UpdateBasketAsync(Domain.Entities.Basket basket);
     public Task DeleteBasketItemAsync(Domain.Entities.Basket basket, Guid productPublicId);
     public Task DeleteBasket(Domain.Entities.Basket basket);
+    public Task ClearBasketAsync(Domain.Entities.Basket basket);
 }

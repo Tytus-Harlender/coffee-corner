@@ -7,9 +7,9 @@ public class OrderFactory : IOrderFactory
 {
     public Order CreateOrderFromBasket(BasketDto basket, int customerDbId, IDictionary<Guid, int> productIds)
     {
-        if (basket == null || basket.BasketItems.Any())
+        if (basket == null || !basket.BasketItems.Any())
             throw new ArgumentNullException(nameof(basket), "Basket cannot be null or empty.");
-
+        
         var order = new Order(customerDbId);
 
         foreach (var item in basket.BasketItems)
@@ -17,7 +17,7 @@ public class OrderFactory : IOrderFactory
             var orderItem = new OrderItem(order, productIds[item.ProductPublicId], item.Quantity, item.UnitPrice);
             order.AddItem(orderItem);
         }
-
+        
         return order;
     }
 }

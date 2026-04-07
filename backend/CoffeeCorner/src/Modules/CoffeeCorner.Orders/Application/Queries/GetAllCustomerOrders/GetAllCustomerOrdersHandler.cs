@@ -11,6 +11,6 @@ public class GetAllCustomerOrdersHandler(ICustomersModule customersModule, IOrde
         
         var orders = await orderRepository.GetAllUserOrdersAsync(customerId);
 
-        return [.. orders.Select(o => new OrderDto() { Status = o.Status, TotalAmount = o.TotalAmount })];
+        return [.. orders.Select(o => new OrderDto() { Status = o.Status.ToString(), TotalAmount = o.TotalAmount })];
     }
 }

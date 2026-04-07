@@ -22,7 +22,7 @@ public sealed class Basket : BaseEntity
         }
         else
         {
-            BasketItems.Add(new BasketItem(this.Id, productId, quantity, unitPrice));
+            BasketItems.Add(new BasketItem(this, productId, quantity, unitPrice));
         }
     }
 

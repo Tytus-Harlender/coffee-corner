@@ -19,7 +19,7 @@ public class BasketConfiguration : IEntityTypeConfiguration<Domain.Entities.Bask
             .IsUnique();
 
         builder.HasMany(b => b.BasketItems)
-            .WithOne()
+            .WithOne(bi => bi.Basket)
             .HasForeignKey(bi => bi.BasketId)
             .OnDelete(DeleteBehavior.Cascade);
     }

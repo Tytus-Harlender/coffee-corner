@@ -47,11 +47,8 @@ public class BasketModule(ICustomersModule customersModule, ICatalogModule catal
         if (customerDbId == 0)
             throw new Exception("The customer was not found.");
         
-        var basket = await basketRepository.GetBasketAsync(customerDbId);
-
-        if (basket is null)
-            return;
-
-        basket.BasketItems.Clear();
+        var basket = await basketRepository.GetBasketAsync(customerDbId, false);
+        
+        await basketRepository.ClearBasketAsync(basket);
     }
 }

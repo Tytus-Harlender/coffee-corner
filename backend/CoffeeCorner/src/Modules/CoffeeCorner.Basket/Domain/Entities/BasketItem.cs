@@ -8,12 +8,13 @@ public sealed class BasketItem : BaseEntity
     public decimal UnitPrice { get; private set; }
 
     public int BasketId { get; private set; }
+    public Basket Basket { get; private set; } = null!;
     public int ProductId { get; private set; }
 
     private BasketItem() { }
-    public BasketItem(int basketId, int productId, int quantity, decimal unitPrice)
+    public BasketItem(Basket basket, int productId, int quantity, decimal unitPrice)
     {
-        BasketId = basketId;
+        Basket = basket;
         ProductId = productId;
         Quantity = quantity;
         UnitPrice = unitPrice;

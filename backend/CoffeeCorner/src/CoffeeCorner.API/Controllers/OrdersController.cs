@@ -10,11 +10,11 @@ namespace CoffeeCorner.API.Controllers;
 [Route("api/v1/users")]
 public class OrdersController(IMediator mediator) : ControllerBase
 {
-    [HttpPost("/from-basket/{basketId:guid}")]
+    [HttpPost("/from-basket/{customerPublicId:guid}")]
     [Authorize]
-    public async Task<ActionResult<OrderDto>> CreateOrderFromBasket([FromRoute] Guid basketId)
+    public async Task<ActionResult<OrderDto>> CreateOrderFromBasket([FromRoute] Guid customerPublicId)
     {
-        var orderDto = await mediator.Send( new CreateOrderFromBasketCommand(basketId));
+        var orderDto = await mediator.Send( new CreateOrderFromBasketCommand(customerPublicId));
 
         return CreatedAtAction(nameof(CreateOrderFromBasket), orderDto);
     }

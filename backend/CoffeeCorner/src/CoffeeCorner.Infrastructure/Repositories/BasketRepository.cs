@@ -1,5 +1,4 @@
 ﻿using CoffeeCorner.Basket;
-using CoffeeCorner.Basket.Application;
 using CoffeeCorner.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,15 +25,15 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
 
         IQueryable<Basket.Domain.Entities.Basket> query = context.Baskets
             .Where(b => b.CustomerId == customerId && !b.IsDeleted)
-            .Include(b => b.BasketItems.Where(bi => bi.Quantity > 0));
+            .Include(b => b.BasketItems);
 
         if (asNoTracking)
             query = query.AsNoTracking();
             
-        var existingBasket = await query.ToListAsync();
+        var existingBasket = await query.FirstOrDefaultAsync();
 
-        if (existingBasket.FirstOrDefault() is not null)
-            return existingBasket.FirstOrDefault() ?? new Basket.Domain.Entities.Basket();
+        if (existingBasket is not null)
+            return existingBasket;
 
         var newBasket = new Basket.Domain.Entities.Basket()
         {
@@ -65,6 +64,12 @@ public class BasketRepository(CoffeeCornerDbContext context) : IBasketRepository
         basket.IsDeleted = true;
 
         context.Baskets.Update(basket);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task ClearBasketAsync(Basket.Domain.Entities.Basket basket)
+    {
+        basket.BasketItems.Clear();
         await context.SaveChangesAsync();
     }
 }

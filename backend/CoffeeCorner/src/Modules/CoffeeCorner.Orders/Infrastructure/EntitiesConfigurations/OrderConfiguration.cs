@@ -25,6 +25,9 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(o => o.TotalAmount)
             .IsRequired();
         
+        builder.Property(o => o.Status)
+            .HasConversion<int>();
+        
         builder.HasMany(o => o.Items)
             .WithOne()
             .HasForeignKey(oi => oi.OrderId)

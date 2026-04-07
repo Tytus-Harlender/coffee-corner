@@ -25,7 +25,8 @@ public class CreateOrderFromBasketHandler(IBasketModule basketModule, ICatalogMo
         return new OrderDto()
         {
             OrderPublicId = order.OrderPublicId,
-            Status =  order.Status
+            Status =  order.Status.ToString(),
+            TotalAmount = order.TotalAmount
         };
     }
 }
